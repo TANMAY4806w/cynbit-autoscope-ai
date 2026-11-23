@@ -1,6 +1,6 @@
 """
 Cynbit AutoScope AI — Multi-Provider Architecture Reasoning Engine
-Supports Groq (Llama-3.3-70B), OpenAI (GPT-4o), Google Gemini, and a robust
+Supports OpenRouter (Llama-3.3-70B), Groq, Google Gemini, and a robust
 Deterministic Offline Heuristic Engine ensuring 100% operational reliability.
 """
 
@@ -16,6 +16,7 @@ from .schemas import (
     TechStackItem,
     CostBreakdown,
     SprintMilestone,
+    CommercialTerms,
 )
 from .diagram_generator import build_mermaid_flowchart
 from .cost_estimator import calculate_engineering_metrics
@@ -104,7 +105,7 @@ def get_heuristic_architecture(client_input: ClientInput) -> Dict[str, Any]:
         decisions = [
             "Microservices architecture with FastAPI backend and Next.js frontend",
             "Multi-tenant data isolation with PostgreSQL schemas and Redis session management",
-            "Qdrant vector database paired with Groq/OpenAI for low-latency agentic workflows",
+            "Qdrant vector database paired with Groq/OpenRouter for low-latency agentic workflows",
             "Containerized deployment on Docker with automated GitHub Actions CI/CD pipelines"
         ]
         stack = [
@@ -174,18 +175,21 @@ def get_heuristic_architecture(client_input: ClientInput) -> Dict[str, Any]:
 
 def synthesize_architecture_with_llm(client_input: ClientInput) -> Optional[Dict[str, Any]]:
     """
-    Attempts to call Groq, OpenAI, or Gemini to synthesize the architecture proposal.
+    Attempts to call OpenRouter, Groq, or Gemini to synthesize the architecture proposal.
     Returns None if no API key is available or if inference fails.
     """
+    openrouter_key = os.getenv("OPENROUTER_API_KEY")
     groq_key = os.getenv("GROQ_API_KEY")
     openai_key = os.getenv("OPENAI_API_KEY")
     gemini_key = os.getenv("GEMINI_API_KEY")
+
+    voice_context = f"\nVoice Intake Transcript: {client_input.voice_transcript}" if client_input.voice_transcript else ""
 
     user_prompt = f"""
 Analyze this client project and generate a technical architecture:
 Project Name: {client_input.project_name}
 Industry: {client_input.client_industry}
-Vision & Requirements: {client_input.vision_description}
+Vision & Requirements: {client_input.vision_description}{voice_context}
 Target Audience: {client_input.target_audience}
 Scale / Concurrency: {client_input.concurrency_tier}
 Compliance: {', '.join(client_input.compliance_tags) if client_input.compliance_tags else 'None specified'}
@@ -201,13 +205,17 @@ Respond with a valid JSON object with the following keys:
 - key_risks_and_mitigations (list of strings)
 """
 
-    # 1. Try Groq (Llama-3.3-70b-versatile - sub-second latency)
-    if groq_key:
+    # 1. Try OpenRouter (Llama 3.3 70B Instruct)
+    if openrouter_key:
         try:
-            from groq import Groq
-            client = Groq(api_key=groq_key)
+            from openai import OpenAI
+            client = OpenAI(
+                api_key=openrouter_key,
+                base_url="https://openrouter.ai/api/v1",
+                timeout=25.0
+            )
             completion = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="meta-llama/llama-3.3-70b-instruct",
                 messages=[
                     {"role": "system", "content": SYSTEM_ARCHITECT_PROMPT},
                     {"role": "user", "content": user_prompt}
@@ -216,28 +224,31 @@ Respond with a valid JSON object with the following keys:
                 temperature=0.2,
                 max_tokens=2500,
             )
-            data = json.loads(completion.choices[0].message.content)
-            data["_provider"] = "Groq (Llama-3.3-70B)"
+            raw = completion.choices[0].message.content
+            data = json.loads(raw)
+            data["_provider"] = "OpenRouter (Llama-3.3-70B)"
             return data
         except Exception:
             pass
 
-    # 2. Try OpenAI
-    if openai_key:
+    # 2. Try Groq (qwen or gpt-oss)
+    if groq_key:
         try:
-            from openai import OpenAI
-            client = OpenAI(api_key=openai_key)
+            from groq import Groq
+            client = Groq(api_key=groq_key, timeout=20.0)
             completion = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="qwen/qwen3.8-27b",
                 messages=[
                     {"role": "system", "content": SYSTEM_ARCHITECT_PROMPT},
                     {"role": "user", "content": user_prompt}
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.2,
+                max_tokens=2500,
             )
-            data = json.loads(completion.choices[0].message.content)
-            data["_provider"] = "OpenAI (GPT-4o-mini)"
+            raw = completion.choices[0].message.content
+            data = json.loads(raw)
+            data["_provider"] = "Groq (Qwen-27B)"
             return data
         except Exception:
             pass
@@ -249,7 +260,8 @@ Respond with a valid JSON object with the following keys:
             genai.configure(api_key=gemini_key)
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(
-                f"{SYSTEM_ARCHITECT_PROMPT}\n\n{user_prompt}\nReturn strict JSON."
+                f"{SYSTEM_ARCHITECT_PROMPT}\n\n{user_prompt}\nReturn strict JSON.",
+                request_options={"timeout": 20}
             )
             text = response.text.strip()
             if text.startswith("```json"):
@@ -268,7 +280,7 @@ Respond with a valid JSON object with the following keys:
 def generate_full_proposal(client_input: ClientInput) -> ArchitectureProposal:
     """
     Master pipeline:
-    1. Attempts LLM synthesis (Groq / OpenAI / Gemini).
+    1. Attempts LLM synthesis (OpenRouter / Groq / Gemini).
     2. Falls back to Deterministic Heuristic Engine if offline or no API key.
     3. Calculates engineering costs and sprint milestones.
     4. Generates high-contrast Mermaid diagram.
@@ -311,6 +323,7 @@ def generate_full_proposal(client_input: ClientInput) -> ArchitectureProposal:
             mermaid_diagram=mermaid_diagram,
             sprint_plan=sprint_plan,
             cost_breakdown=cost_breakdown,
+            commercial_terms=CommercialTerms(),
             compliance_and_security=llm_output.get("compliance_and_security", ["TLS 1.3", "AES-256"]),
             key_risks_and_mitigations=llm_output.get("key_risks_and_mitigations", ["Scope creep mitigation through agile sprints"]),
             generation_mode=provider,
@@ -329,6 +342,7 @@ def generate_full_proposal(client_input: ClientInput) -> ArchitectureProposal:
             mermaid_diagram=mermaid_diagram,
             sprint_plan=sprint_plan,
             cost_breakdown=cost_breakdown,
+            commercial_terms=CommercialTerms(),
             compliance_and_security=h_data["compliance_and_security"],
             key_risks_and_mitigations=h_data["key_risks_and_mitigations"],
             generation_mode="Deterministic Expert Engine (Offline / Zero-API Ready)",

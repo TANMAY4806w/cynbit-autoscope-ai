@@ -1,6 +1,6 @@
 """
-Cynbit AutoScope AI — Proposal Exporter
-Formats architecture proposals into clean, professional Markdown and exportable documents.
+Cynbit AutoScope AI — Proposal & Statement of Work (SOW) Exporter
+Formats architecture proposals and commercial agreements formatted for B2B client presentations.
 """
 
 from .schemas import ArchitectureProposal
@@ -8,18 +8,27 @@ from .schemas import ArchitectureProposal
 
 def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
     """
-    Compiles an executive-grade technical proposal formatted for B2B client presentations.
+    Compiles an executive-grade technical proposal and Statement of Work (SOW)
+    formatted for B2B client presentations.
     """
+    terms = proposal.commercial_terms
+    costs = proposal.cost_breakdown
+
+    deposit_amount = int(costs.total_development_cost_usd * (terms.deposit_percentage / 100))
+    milestone_amount = int(costs.total_development_cost_usd * (terms.milestone_percentage / 100))
+    final_amount = int(costs.total_development_cost_usd * (terms.final_percentage / 100))
+
     lines = [
-        f"# Technical Architecture Proposal: {proposal.project_name}",
-        f"**Prepared by:** Cynbit Technologies Private Limited (`cynbit.in`)  ",
-        f"**Engine:** Cynbit AutoScope AI (`{proposal.generation_mode}`)  ",
-        f"**Date:** {proposal.generated_at}  ",
-        f"**Vertical:** {proposal.client_industry}  ",
+        f"# Technical Solution Architecture & Statement of Work (SOW)",
+        f"## Project: {proposal.project_name}",
+        f"**Service Provider:** Cynbit Technologies Private Limited (`cynbit.in`, Jaipur, Rajasthan)  ",
+        f"**Inference Engine:** Cynbit AutoScope AI (`{proposal.generation_mode}`)  ",
+        f"**Date Generated:** {proposal.generated_at}  ",
+        f"**Industry Vertical:** {proposal.client_industry}  ",
         "",
         "---",
         "",
-        "## 1. Executive Summary",
+        "## 1. Executive Summary & Solution Blueprint",
         proposal.executive_summary,
         "",
         "### Key Architectural Decisions",
@@ -31,7 +40,7 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
         "",
         "---",
         "",
-        "## 2. System Architecture Blueprint",
+        "## 2. Cloud System Architecture",
         "",
         "```mermaid",
         proposal.mermaid_diagram,
@@ -39,9 +48,9 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
         "",
         "---",
         "",
-        "## 3. Recommended Technology Stack",
+        "## 3. Production Technology Stack",
         "",
-        "| Component Category | Technology | Architectural Rationale |",
+        "| Component Category | Technology Selected | Architectural Rationale |",
         "| :--- | :--- | :--- |",
     ])
     for item in proposal.tech_stack:
@@ -51,57 +60,78 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
         "",
         "---",
         "",
-        "## 4. Milestone Sprint Roadmap",
+        "## 4. Milestone Sprint Roadmap & Acceptance Criteria",
         "",
     ])
     for sprint in proposal.sprint_plan:
         lines.append(f"### Sprint {sprint.sprint_number}: {sprint.sprint_name} ({sprint.duration_weeks} Weeks)")
-        lines.append(f"**Core Focus:** {sprint.core_focus}  ")
-        lines.append("**Key Deliverables:**")
+        lines.append(f"**Core Milestone:** {sprint.core_focus}  ")
+        lines.append("**Key Deliverables & Acceptance Criteria:**")
         for d in sprint.deliverables:
-            lines.append(f"- {d}")
+            lines.append(f"- [x] {d}")
         lines.append("")
 
     lines.extend([
         "---",
         "",
-        "## 5. Budget, Engineering Effort & Cloud Infrastructure",
+        "## 5. Commercial Investment & Payment Schedule",
         "",
-        f"* **Total Engineering Effort:** `{proposal.cost_breakdown.total_engineering_hours} developer hours`",
-        f"* **Blended Hourly Rate:** `${proposal.cost_breakdown.blended_hourly_rate_usd}/hr`",
-        f"* **Estimated Development Investment:** `${proposal.cost_breakdown.total_development_cost_usd:,} USD`",
-        f"* **Estimated Monthly Cloud Infrastructure:** `${proposal.cost_breakdown.estimated_cloud_monthly_usd:,} USD/month`",
+        f"* **Total Scoped Effort:** `{costs.total_engineering_hours} Engineering Hours`",
+        f"* **Blended Rate:** `${costs.blended_hourly_rate_usd} / hour (Development, DevOps, AI, QA)`",
+        f"* **Total Fixed-Price Investment:** **`${costs.total_development_cost_usd:,} USD`**",
+        f"* **Estimated Monthly Cloud Burn:** **`${costs.estimated_cloud_monthly_usd:,} USD/month`**",
         "",
-        "### Cloud Cost Breakdown",
+        "### Milestone Payment Schedule",
+        f"| Payment Gate | Percentage | Amount (USD) | Trigger Event |",
+        f"| :--- | :---: | :---: | :--- |",
+        f"| **1. Upfront Deposit** | {terms.deposit_percentage}% | **${deposit_amount:,}** | Project kickoff & repository provisioning |",
+        f"| **2. Mid-Point Milestone** | {terms.milestone_percentage}% | **${milestone_amount:,}** | Sprint 3 completion & Core API demo |",
+        f"| **3. Final Delivery** | {terms.final_percentage}% | **${final_amount:,}** | Staging sign-off & production cutover |",
+        "",
+        "### Itemized Cloud Infrastructure Burn",
         "| Cloud Service / Resource | Estimated Monthly Burn (USD) |",
         "| :--- | :--- |",
     ])
-    for k, v in proposal.cost_breakdown.cloud_cost_items.items():
+    for k, v in costs.cloud_cost_items.items():
         lines.append(f"| {k} | `${v:,}` |")
 
     lines.extend([
         "",
         "---",
         "",
-        "## 6. Compliance, Security & Risk Mitigation",
+        "## 6. Commercial Terms & Legal Protections",
         "",
-        "### Security Standards",
+        f"* **Intellectual Property (IP):** {terms.intellectual_property_clause}",
+        f"* **Post-Launch Warranty:** Cynbit provides `{terms.warranty_days} calendar days` of complimentary bug-fixing and SLA monitoring following production delivery.",
+        f"* **Scope Management:** {terms.change_order_policy}",
+        "",
+        "### Compliance & Security Baseline",
     ])
     for c in proposal.compliance_and_security:
-        lines.append(f"- {c}")
+        lines.append(f"- 🔒 {c}")
 
     lines.extend([
         "",
-        "### Risk Assessment & Mitigations",
+        "### Technical Risk Mitigation",
     ])
     for r in proposal.key_risks_and_mitigations:
-        lines.append(f"- {r}")
+        lines.append(f"- ⚠️ {r}")
 
     lines.extend([
         "",
         "---",
         "",
-        "> *This proposal was autonomously generated by Cynbit AutoScope AI. For revisions, contract signing, or engineering kickoff, contact the Cynbit architecture team at contact@cynbit.in or visit [cynbit.in](https://cynbit.in).*",
+        "## 7. Signatures & Authorization",
+        "",
+        "```text",
+        "Accepted & Agreed for Client:               Accepted for Cynbit Technologies:",
+        "Signature: ______________________          Signature: ______________________",
+        "Name:      ______________________          Name:      Ashutosh Upadhyay / Mohak Saini",
+        "Title:     ______________________          Title:     Director & Technical Architect",
+        "Date:      ______________________          Date:      ______________________",
+        "```",
+        "",
+        "> *Generated autonomously by Cynbit AutoScope AI. To execute or customize, contact contact@cynbit.in or visit [cynbit.in](https://cynbit.in).*",
     ])
 
     return "\n".join(lines)

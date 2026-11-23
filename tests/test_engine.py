@@ -1,6 +1,6 @@
 """
 Unit and Integration Tests for Cynbit AutoScope AI Engine
-Run with: pytest tests/
+Run with: pytest tests/ -v
 """
 
 import sys
@@ -9,11 +9,12 @@ import os
 # Ensure package root is in path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from core.schemas import ClientInput, ArchitectureProposal
+from core.schemas import ClientInput, ArchitectureProposal, CommercialTerms
 from core.architect_engine import generate_full_proposal, get_heuristic_architecture
 from core.diagram_generator import build_mermaid_flowchart
 from core.cost_estimator import calculate_engineering_metrics
 from core.exporter import export_proposal_markdown
+from core.audio_transcriber import transcribe_client_audio
 
 
 def test_client_input_validation():
@@ -88,6 +89,21 @@ def test_cost_and_sprint_math():
     assert sprints[0].sprint_number == 1
 
 
+def test_commercial_terms_and_sow_math():
+    """Verifies commercial payment milestones and terms."""
+    terms = CommercialTerms()
+    assert terms.deposit_percentage + terms.milestone_percentage + terms.final_percentage == 100
+    assert terms.warranty_days >= 30
+    assert "intellectual property" in terms.intellectual_property_clause.lower()
+
+
+def test_audio_transcriber_graceful_handling():
+    """Verifies that the audio transcriber gracefully handles missing files."""
+    success, result = transcribe_client_audio("non_existent_file.mp3")
+    assert success is False
+    assert len(result) > 0
+
+
 def test_full_proposal_generation_and_export():
     """Verifies end-to-end proposal generation and markdown export."""
     client_in = ClientInput(
@@ -106,7 +122,8 @@ def test_full_proposal_generation_and_export():
     assert len(proposal.sprint_plan) > 0
     
     md_output = export_proposal_markdown(proposal)
-    assert "# Technical Architecture Proposal: ShopSmart AI" in md_output
+    assert "Statement of Work (SOW)" in md_output
     assert "Cynbit Technologies Private Limited" in md_output
     assert "```mermaid" in md_output
-    assert "Milestone Sprint Roadmap" in md_output
+    assert "Milestone Payment Schedule" in md_output
+    assert "Signatures & Authorization" in md_output

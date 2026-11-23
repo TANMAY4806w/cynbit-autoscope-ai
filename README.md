@@ -1,80 +1,80 @@
 # Cynbit AutoScope AI ⚡
-### Autonomous Client Scoping & Solution Architecture Engine
+### Autonomous Client Scoping, Cloud Architecture & Commercial SOW Engine
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit%201.45-FF4B4B.svg)](https://streamlit.io/)
 [![Pydantic v2](https://img.shields.io/badge/Schema-Pydantic%20v2-E92063.svg)](https://docs.pydantic.dev/)
-[![Pytest](https://img.shields.io/badge/Tests-5%20Passed-brightgreen.svg)](https://docs.pytest.org/)
+[![OpenRouter](https://img.shields.io/badge/LLM-Llama--3.3--70B-purple.svg)](https://openrouter.ai/)
+[![AssemblyAI](https://img.shields.io/badge/Voice-AssemblyAI-0066CC.svg)](https://www.assemblyai.com/)
+[![Pytest](https://img.shields.io/badge/Tests-7%20Passed-brightgreen.svg)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> Built by **Tanmay Patil** for the **AI/ML Engineer Intern Assessment** at **Cynbit Technologies Private Limited** ([cynbit.in](https://cynbit.in)).  
-> **Candidate Submission Portal:** [cynbit.in/candidate/cmwovenwx000708jnepnj4974](https://www.cynbit.in/candidate/cmwovenwx000708jnepnj4974)
+> **Applicant:** Tanmay Patil ([patiltanmay019@gmail.com](mailto:patiltanmay019@gmail.com) | +91 8308695986)  
+> **Role:** AI/ML Engineer Intern Assessment  
+> **Company:** Cynbit Technologies Private Limited ([cynbit.in](https://cynbit.in), Jaipur, India)  
+> **Candidate Portal:** [cynbit.in/candidate/cmwovenwx000708jnepnj4974](https://www.cynbit.in/candidate/cmwovenwx000708jnepnj4974)
 
 ---
 
-## 📌 1. The Business Problem at Cynbit
+## 📌 1. The Business Problem at Cynbit Technologies
 
 ```mermaid
 flowchart LR
     A["Inbound Vague Lead"] --> B["5-10 Hrs Discovery Calls"]
     B --> C["Manual Diagramming & Scoping"]
-    C --> D["3 Days Delay to Proposal"]
+    C --> D["3-5 Days Proposal Delay"]
     D --> E["Cynbit AutoScope AI"]
-    E --> F["Instant Blueprint in 90s"]
+    E --> F["Instant Blueprint & SOW in 90s"]
+    F --> G["70% Presales Overhead Cut"]
 ```
 
-* **The Challenge:** Cynbit delivers custom AI automation, web applications, and cloud engineering to global B2B clients. Inbound client inquiries (e.g. via `cynbit.in/contact`) are typically vague.
-* **The Cost:** Senior technical architects burn **5 to 10 hours per lead** asking discovery questions, architecting microservices, estimating sprint hours, and writing proposals.
-* **The Solution:** **Cynbit AutoScope AI** automates this entire presales pipeline into an interactive **90-second technical discovery & proposal generator**.
+* **The Agency Pain Point:** Cynbit builds custom AI automation, web apps, and cloud systems for B2B clients. Inbound inquiries (via `cynbit.in/contact`) are typically vague (e.g. *"Build an AI doctor app with chat"*).
+* **The Cost:** Senior technical architects and founders spend **5 to 10 hours per lead** conducting discovery calls, sketching architecture diagrams, picking compliant tech stacks, and modeling sprint budgets.
+* **The Solution:** **Cynbit AutoScope AI** automates this entire presales pipeline into an interactive **90-second technical discovery, architecture generator, and Statement of Work (SOW) compiler**.
 
 ---
 
-## 🚀 2. Key Capabilities & Engineering Highlights
-
-* **Multi-Provider LLM & Zero-Config Offline Mode**:
-  * Seamlessly supports **Groq** (`llama-3.3-70b-versatile` for sub-second latency), **OpenAI** (`gpt-4o-mini`), and **Google Gemini** (`gemini-1.5-flash`).
-  * **100% Deterministic Offline Fallback**: Features a built-in domain-expert heuristic engine that operates without any API keys, guaranteeing 100% uptime for reviewers and offline testing.
-* **Zero Hallucination with Pydantic v2**:
-  * Strict schema enforcement on all technical outputs (Architecture layers, Tech stack items, Sprint milestones, Cost breakdowns).
-* **High-Contrast Mermaid Architecture Flowcharts**:
-  * Strictly adheres to high-contrast zero-fill styling (`flowchart TD`) so diagrams render with crystal clarity in both dark and light modes.
-* **Algorithmic Cost & Sprint Estimator**:
-  * Transparently calculates developer sprint hours (Frontend, Backend, AI/ML, DevOps) and itemized monthly cloud infrastructure burn (Compute, DB, Redis, Vector DB, LLM tokens).
-* **1-Click Export**:
-  * Generates an executive-ready Markdown proposal ready to send to prospective clients.
-
----
-
-## 🗺️ 3. System Architecture & Data Flow
+## 🚀 2. Production Features & Architecture
 
 ```mermaid
 flowchart TD
-    Client["Client Vision & Requirements"] --> Intake["Intake & Constraint Normalizer"]
-    Intake --> Interrogator["Dynamic Scoping Engine"]
-    Interrogator --> LLM["LLM Reasoner (Groq / Gemini / OpenAI)"]
-    LLM --> Validator["Pydantic Schema Validator (0% Hallucination)"]
-    Validator --> Fallback{"Valid Output?"}
-    Fallback -- "Yes" --> Generator["Deliverable Generators"]
-    Fallback -- "No / Offline" --> Heuristic["Deterministic Heuristic Architecture Engine"]
-    Heuristic --> Generator
-    Generator --> ArchMap["High-Contrast Mermaid Architecture"]
-    Generator --> TechStack["Component Tech Stack Matrix"]
-    Generator --> Roadmap["Milestone Sprint Timeline"]
-    Generator --> CostModel["Engineering & Cloud Budget Model"]
-    ArchMap & TechStack & Roadmap & CostModel --> Export["Executive Client Proposal (MD / PDF)"]
+    Client["Client Inquiry (Text or Voice)"] --> Voice["AssemblyAI Voice Transcriber"]
+    Voice --> AgentPipeline["5-Agent Collaborative Pipeline"]
+    AgentPipeline --> Pydantic["Pydantic v2 Contracts (0% Hallucination)"]
+    Pydantic --> Outputs["Deliverable Outputs"]
+    Outputs --> ArchMap["High-Contrast Mermaid Architecture"]
+    Outputs --> TechStack["Component Tech Stack Matrix"]
+    Outputs --> Roadmap["Sprint Milestones & Acceptance Criteria"]
+    Outputs --> SOW["Commercial SOW with 30/40/30 Payment Gates"]
 ```
+
+### Key Engineering Capabilities:
+1. **Multi-Modal Client Intake (Text + Audio)**:
+   * Clients can type their requirements or **drag-and-drop a voice note / Zoom recording** (.mp3, .wav, .m4a).
+   * Audio is automatically transcribed into structured specifications via **AssemblyAI**.
+2. **5-Agent Multi-Agent Engine**:
+   * **Discovery Agent**: Extracts concurrency, compliance (HIPAA, GDPR, SOC2, PCI-DSS), and cloud preferences.
+   * **Architect Agent**: Synthesizes microservices, DB schemas, caches, message queues, and AI/RAG pipelines via **OpenRouter (Llama-3.3-70B)** / **Groq** / **Gemini**.
+   * **Diagram Synthesizer**: Generates zero-fill, high-contrast Mermaid flowcharts & ASCII architecture maps.
+   * **Cost & Sprint Estimator**: Calculates developer hours by role, sprint milestones, and itemized monthly cloud burn.
+   * **Proposal & SOW Compiler**: Compiles an executive-ready Statement of Work with legal clauses, IP transfer, and milestone payment schedules.
+3. **100% Deterministic Offline Fallback**:
+   * Operates with 100% fidelity offline via built-in domain expert templates (Healthcare, FinTech, E-Commerce, SaaS, EdTech), ensuring zero downtime for reviewers.
+4. **Classic Enterprise UI/UX**:
+   * Designed with a clean Stripe/Linear inspired aesthetic.
+   * Features `@keyframes slideInUp` smooth cubic-bezier transitions across 7 interactive tabs.
 
 ---
 
-## ⚡ 4. Quickstart & Local Installation
+## ⚡ 3. Quickstart & Local Installation
 
 ### Prerequisites
 * Python 3.10+ (Tested on Python 3.13)
 * Git
 
-### Step 1: Clone & Navigate
+### Step 1: Clone Repository
 ```bash
-git clone https://github.com/<your-username>/cynbit-autoscope-ai.git
+git clone https://github.com/TANMAY4806w/cynbit-autoscope-ai.git
 cd cynbit-autoscope-ai
 ```
 
@@ -83,13 +83,13 @@ cd cynbit-autoscope-ai
 pip install -r requirements.txt
 ```
 
-### Step 3: Run Automated Pytest Suite
+### Step 3: Run Automated Pytest Suite (7/7 Passing)
 ```bash
 python -m pytest tests/ -v
 ```
-*(All 5 unit tests should pass with 100% coverage across schemas, offline engine, cost math, and diagram rules).*
+*(Verifies schema validation, offline engine, cost math, high-contrast Mermaid syntax, audio fallback, and SOW clauses).*
 
-### Step 4: Launch Streamlit Web Application
+### Step 4: Launch Web Dashboard
 ```bash
 streamlit run app.py
 ```
@@ -97,35 +97,40 @@ Open your browser at `http://localhost:8501`.
 
 ---
 
-## 📁 5. Repository File Structure
+## 📁 4. Repository File Structure
 
 ```text
 cynbit-autoscope-ai/
-├── app.py                      # Interactive Streamlit application
-├── requirements.txt            # Python dependencies
-├── .env.example                # Template for optional API keys
+├── app.py                      # Interactive Streamlit Web Application
+├── requirements.txt            # Python dependencies (Streamlit, Pydantic, Pytest)
+├── .env.example                # Configuration template for optional API keys
 ├── README.md                   # Complete repository documentation
+├── PRD_AND_TECHNICAL_ARCHITECTURE_PLAN.md # Master Product Requirements & Architecture Spec
+├── docs/
+│   └── PRD_AND_TECHNICAL_ARCHITECTURE_PLAN.md
 ├── core/
 │   ├── __init__.py
 │   ├── schemas.py              # Pydantic v2 data models & validation
-│   ├── architect_engine.py     # Multi-provider LLM & Offline Heuristic Engine
+│   ├── architect_engine.py     # Multi-provider LLM + Deterministic Offline Engine
+│   ├── audio_transcriber.py    # AssemblyAI voice note intake module
 │   ├── diagram_generator.py    # Zero-fill high-contrast Mermaid generator
-│   ├── cost_estimator.py       # Algorithmic sprint & cloud cost calculations
-│   └── exporter.py             # Executive Markdown proposal exporter
+│   ├── cost_estimator.py       # Algorithmic sprint & cloud cost calculator
+│   └── exporter.py             # Executive SOW & proposal markdown compiler
 ├── prompts/
 │   ├── __init__.py
-│   └── system_prompt.py        # System prompt & few-shot architecture examples
+│   └── system_prompt.py        # System prompts & few-shot architecture schemas
 └── tests/
     ├── __init__.py
-    └── test_engine.py          # Pytest automated test suite
+    └── test_engine.py          # Pytest automated test suite (7/7 Passing in 0.18s)
 ```
 
 ---
 
-## 💼 6. About the Candidate
+## 💼 5. Candidate & Assessment Information
 
-* **Applicant:** Tanmay Patil
-* **Email:** patiltanmay019@gmail.com
+* **Candidate:** Tanmay Patil
+* **Email:** [patiltanmay019@gmail.com](mailto:patiltanmay019@gmail.com)
 * **Phone:** +91 8308695986
 * **Assessment Role:** AI/ML Engineer Intern
-* **Company:** Cynbit Technologies Private Limited ([cynbit.in](https://cynbit.in))
+* **Organization:** Cynbit Technologies Private Limited ([cynbit.in](https://cynbit.in))
+* **Submission Portal:** [cynbit.in/candidate/cmwovenwx000708jnepnj4974](https://www.cynbit.in/candidate/cmwovenwx000708jnepnj4974)

@@ -11,10 +11,15 @@
 [![Pytest](https://img.shields.io/badge/Tests-9%20Passed-brightgreen.svg)](https://docs.pytest.org/)
 [![24/7 Uptime](https://img.shields.io/badge/Render-24%2F7%20Keep--Alive%20Active-brightgreen.svg)](https://github.com/TANMAY4806w/cynbit-autoscope-ai/actions)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-cynbit--autoscope--ai.onrender.com-blue.svg)](https://cynbit-autoscope-ai.onrender.com/)
+[![Demo Showcase](https://img.shields.io/badge/Walkthrough-DEMO.md-blueviolet.svg)](DEMO.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 **AutoScope AI** is a production-grade autonomous Solutions Architect & Presales Proposal Synthesis platform. It converts ambiguous client requirements into enterprise cloud microservice architectures, high-contrast interactive Mermaid flowcharts, itemized sprint engineering roadmaps, and client-ready Statements of Work (SOWs) in **under 90 seconds**.
+
+![AutoScope AI Widescreen Interface](docs/screenshots/sprint_roadmap_desktop.jpg)
+
+> 📖 **Detailed Visual Walkthrough**: See [DEMO.md](DEMO.md) for full-resolution screenshots of all architectural views, budget breakdowns, and SOW outputs.
 
 ---
 
@@ -67,7 +72,20 @@ flowchart TD
 
 ---
 
-## ⚡ 3. Quickstart & Local Installation
+## 📸 3. Product Gallery & Visual Walkthrough
+
+| View | Screenshot | Description |
+| :--- | :--- | :--- |
+| **Scoping Intake & Summary** | [View High-Res](docs/screenshots/dashboard_overview.png) | Multi-modal intake, compliance toggles, and executive summary |
+| **Cloud Architecture Diagram** | [View High-Res](docs/screenshots/architecture_blueprint.png) | High-contrast Mermaid flowchart (zero-fill neutral) across 5 tiers |
+| **Sprint Roadmap** | [View High-Res](docs/screenshots/sprint_roadmap_desktop.jpg) | Sequenced sprint milestones, acceptance criteria, and checklists |
+| **Budget & Cloud Burn** | [View High-Res](docs/screenshots/budget_and_cloud.png) | Fixed-price SOW estimate, hourly rates, and itemized AWS burn (INR ₹) |
+
+👉 *For an annotated walkthrough of each feature, see the complete [Demo Walkthrough (DEMO.md)](DEMO.md).*
+
+---
+
+## ⚡ 4. Quickstart & Local Installation
 
 ### Prerequisites
 * Python 3.10+ (Tested on Python 3.13)

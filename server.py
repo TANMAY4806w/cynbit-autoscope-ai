@@ -4,8 +4,12 @@ Provides REST endpoints with OpenAPI documentation and serves the React producti
 """
 
 import os
+import sys
 import tempfile
 import uvicorn
+
+# Ensure repository root is in python path regardless of launch directory
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles

@@ -16,15 +16,15 @@ export const MermaidViewer: React.FC<MermaidViewerProps> = ({ chart }) => {
       theme: 'dark',
       themeVariables: {
         darkMode: true,
-        background: '#0f172a',
-        primaryColor: '#008080',
-        primaryTextColor: '#f8fafc',
-        primaryBorderColor: '#38bdf8',
-        lineColor: '#38bdf8',
-        secondaryColor: '#1e293b',
-        tertiaryColor: '#0f172a',
+        background: '#121215',
+        primaryColor: '#18181b',
+        primaryTextColor: '#f4f4f5',
+        primaryBorderColor: '#3f3f46',
+        lineColor: '#71717a',
+        secondaryColor: '#27272a',
+        tertiaryColor: '#18181b',
       },
-      fontFamily: 'Plus Jakarta Sans, sans-serif',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
       securityLevel: 'loose',
     });
 
@@ -56,7 +56,7 @@ export const MermaidViewer: React.FC<MermaidViewerProps> = ({ chart }) => {
   return (
     <div
       ref={containerRef}
-      className="w-full overflow-x-auto p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex justify-center items-center min-h-[320px]"
+      className="w-full overflow-x-auto p-4 rounded-xl bg-[#121215] border border-zinc-800 flex justify-center items-center min-h-[320px]"
       dangerouslySetInnerHTML={{ __html: svgContent }}
     />
   );

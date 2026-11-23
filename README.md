@@ -128,7 +128,7 @@ npm run dev
 
 ---
 
-## 🚀 4. Production Cloud Deployment on Render (24/7 Zero Spin-Down)
+## 🚀 5. Production Cloud Deployment on Render (24/7 Zero Spin-Down)
 
 AutoScope AI includes pre-configured Render infrastructure (`render.yaml`) and an automated **GitHub Actions Keep-Alive Cron** (`.github/workflows/keep_alive.yml`) to keep the Render free-tier instance permanently active with **zero cold starts and zero sleep timeouts**.
 
@@ -179,27 +179,27 @@ flowchart LR
    *(Note: If no API keys are provided, the system automatically uses its built-in Deterministic Offline Engine with 100% full feature availability).*
 
 5. **Deploy**:
-   * Click **Create Web Service**. Render will provision dependencies and serve the app at `https://autoscope-ai.onrender.com`.
+   * Click **Create Web Service**. Render will provision dependencies and serve the app at `https://cynbit-autoscope-ai.onrender.com`.
 
 ---
 
-## ⏱️ 5. Setting Up 24/7 Keep-Alive Automation (Solves Free Tier Sleep)
+## ⏱️ 6. Setting Up 24/7 Keep-Alive Automation (Solves Free Tier Sleep)
 
 Render's free tier spins down after **15 minutes of inactivity**. We prevent this completely via our included GitHub Action:
 
-1. Copy your live Render URL (e.g. `https://autoscope-ai.onrender.com`).
+1. Copy your live Render URL (e.g. `https://cynbit-autoscope-ai.onrender.com`).
 2. Go to your GitHub repository:
    * **Settings** ➡️ **Secrets and variables** ➡️ **Actions** ➡️ **New repository secret**.
 3. Create the secret:
    * **Name**: `RENDER_APP_URL`
-   * **Value**: `https://autoscope-ai.onrender.com` *(replace with your actual Render URL)*
+   * **Value**: `https://cynbit-autoscope-ai.onrender.com`
 4. Click **Add secret**.
 
 The workflow in `.github/workflows/keep_alive.yml` automatically triggers **every 14 minutes**, pinging `/api/health` so your application stays warm 24 hours a day, 7 days a week.
 
 ---
 
-## 📁 6. Repository File Structure
+## 📁 7. Repository File Structure
 
 ```text
 cynbit-autoscope-ai/
@@ -212,7 +212,10 @@ cynbit-autoscope-ai/
 ├── requirements.txt            # Python dependencies (FastAPI, Uvicorn, Pydantic, Pytest)
 ├── .env.example                # Configuration template for optional API keys
 ├── README.md                   # Complete repository documentation
+├── DEMO.md                     # Dedicated interactive product showcase & screenshots
 ├── PRD_AND_TECHNICAL_ARCHITECTURE_PLAN.md # Master Product Requirements & Architecture Spec
+├── docs/
+│   └── screenshots/            # 1080p Full HD desktop browser screenshots
 ├── web-app/                    # Production React 19 + TypeScript + Tailwind CSS Frontend
 │   ├── src/
 │   │   ├── App.tsx             # Main Application shell with 7 tabs & slide animations
@@ -240,8 +243,10 @@ cynbit-autoscope-ai/
 
 ---
 
-## 💼 7. Project Information & Open Source Links
+## 💼 8. Project Information & Open Source Links
 
-* **Repository:** [https://github.com/TANMAY4806w/cynbit-autoscope-ai](https://github.com/TANMAY4806w/cynbit-autoscope-ai)
-* **API Documentation:** Interactive Swagger UI available at `http://localhost:8000/docs`
+* **Live Deployment:** [https://cynbit-autoscope-ai.onrender.com/](https://cynbit-autoscope-ai.onrender.com/)
+* **Demo Showcase:** [Demo Walkthrough & High-Res Screenshots](DEMO.md)
+* **GitHub Repository:** [https://github.com/TANMAY4806w/cynbit-autoscope-ai](https://github.com/TANMAY4806w/cynbit-autoscope-ai)
+* **Interactive API Documentation:** [https://cynbit-autoscope-ai.onrender.com/docs](https://cynbit-autoscope-ai.onrender.com/docs)
 * **License:** MIT Open Source License

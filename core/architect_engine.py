@@ -6,8 +6,11 @@ Deterministic Offline Heuristic Engine ensuring 100% operational reliability.
 
 import os
 import json
+import logging
 import datetime
 from typing import Optional, Dict, Any, List
+
+logger = logging.getLogger("autoscope.architect")
 
 from .schemas import (
     ClientInput,
@@ -228,8 +231,8 @@ Respond with a valid JSON object with the following keys:
             data = json.loads(raw)
             data["_provider"] = "OpenRouter (Llama-3.3-70B)"
             return data
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("OpenRouter inference failed (%s). Attempting secondary provider.", e)
 
     # 2. Try Groq (qwen or gpt-oss)
     if groq_key:
@@ -250,8 +253,8 @@ Respond with a valid JSON object with the following keys:
             data = json.loads(raw)
             data["_provider"] = "Groq (Qwen-27B)"
             return data
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("Groq inference failed (%s). Attempting secondary provider.", e)
 
     # 3. Try Gemini
     if gemini_key:
@@ -271,9 +274,10 @@ Respond with a valid JSON object with the following keys:
             data = json.loads(text.strip())
             data["_provider"] = "Google Gemini 1.5 Flash"
             return data
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("Gemini inference failed (%s). Triggering deterministic offline fallback.", e)
 
+    logger.info("All external cloud LLM providers bypassed or unavailable. Activating Deterministic Heuristic Engine.")
     return None
 
 

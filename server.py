@@ -1,5 +1,5 @@
 """
-Cynbit AutoScope AI — Production FastAPI Backend & Static Server
+AutoScope AI — Production FastAPI Backend & Static Server
 Provides REST endpoints with OpenAPI documentation and serves the React production frontend.
 """
 
@@ -28,8 +28,8 @@ from core.exporter import export_proposal_markdown
 from core.audio_transcriber import transcribe_client_audio
 
 app = FastAPI(
-    title="Cynbit AutoScope AI API",
-    description="Autonomous Solutions Architect & ProposalCraft Engine for Cynbit Technologies Private Limited",
+    title="AutoScope AI API",
+    description="Autonomous Cloud Solutions Architect & Statement of Work (SOW) Engine",
     version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -49,7 +49,7 @@ def health_check():
     """Returns service health and active AI integration status."""
     return {
         "status": "healthy",
-        "service": "Cynbit AutoScope AI",
+        "service": "AutoScope AI",
         "integrations": {
             "openrouter": bool(os.getenv("OPENROUTER_API_KEY")),
             "groq": bool(os.getenv("GROQ_API_KEY")),
@@ -110,6 +110,6 @@ if os.path.exists(dist_dir):
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
-    print(f"⚡ Starting Cynbit AutoScope AI on http://localhost:{port}")
+    print(f"⚡ Starting AutoScope AI on http://localhost:{port}")
     print(f"📖 OpenAPI Swagger Documentation at http://localhost:{port}/docs")
     uvicorn.run(app, host="0.0.0.0", port=port)

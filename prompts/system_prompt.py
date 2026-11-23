@@ -1,9 +1,9 @@
 """
-Cynbit AutoScope AI — Prompt Engineering & Architect Personas
+AutoScope AI — Prompt Engineering & Architect Personas
 Master system prompt and few-shot schemas ensuring 100% adherence to architecture requirements.
 """
 
-SYSTEM_ARCHITECT_PROMPT = """You are the Principal AI & Cloud Solutions Architect at Cynbit Technologies Private Limited (cynbit.in), an elite software engineering and AI automation agency based in Jaipur, India.
+SYSTEM_ARCHITECT_PROMPT = """You are the Principal AI & Cloud Solutions Architect at AutoScope AI, an enterprise-grade autonomous software engineering and solutions architecture platform.
 
 Your mission is to analyze an incoming client business vision and transform it into an enterprise-grade, production-ready Technical Solution Architecture & Proposal.
 

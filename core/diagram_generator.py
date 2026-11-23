@@ -90,7 +90,7 @@ def build_ascii_system_diagram(client_input: ClientInput) -> str:
     cloud = client_input.preferred_cloud or "AWS"
     diagram = f"""
 +---------------------------------------------------------------+
-|                   CYNBIT AUTOSCOPE ARCHITECTURE               |
+|                 AUTOSCOPE ARCHITECTURE BLUEPRINT              |
 |                   Project: {client_input.project_name:<30}     |
 +---------------------------------------------------------------+
     |

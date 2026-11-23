@@ -12,12 +12,12 @@ import {
   CheckCircle2,
   Cpu,
   Mic,
-  ChevronRight,
-  ExternalLink,
+  FileCode2,
 } from 'lucide-react';
 import type { ClientInput, ArchitectureProposal } from './types/proposal';
 import { generateProposal, exportProposalMarkdown, buildAsciiDiagram } from './services/proposalEngine';
 import { MermaidViewer } from './components/MermaidViewer';
+import { CustomSelect } from './components/CustomSelect';
 
 const PRESETS: Record<string, Partial<ClientInput>> = {
   'Healthcare: MediTriage AI (HIPAA)': {
@@ -144,47 +144,53 @@ export default function App() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${proposal.project_name.toLowerCase().replace(/\s+/g, '_')}_cynbit_sow.md`;
+      a.download = `${proposal.project_name.toLowerCase().replace(/\s+/g, '_')}_architecture_sow.md`;
       a.click();
     }
   };
 
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col font-sans selection:bg-zinc-700 selection:text-white">
-      {/* Top Banner / Navigation */}
+      {/* Top Navigation */}
       <header className="border-b border-zinc-800 bg-[#09090b]/90 backdrop-blur-md sticky top-0 z-50 px-6 py-3.5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-zinc-800 border border-zinc-700/80 flex items-center justify-center text-zinc-200 shadow-sm">
-              <Cpu className="h-5 w-5" />
+              <Cpu className="h-5 w-5 text-blue-400" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-base tracking-tight text-white">Cynbit AutoScope AI</span>
-                <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300">
-                  Production Suite
+                <span className="font-semibold text-base tracking-tight text-white">AutoScope AI</span>
+                <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-zinc-800/90 border border-zinc-700 text-zinc-300 font-mono">
+                  v1.0 • Enterprise
                 </span>
               </div>
               <p className="text-xs text-zinc-400">
-                Autonomous Technical Scoping & Commercial SOW Engine &bull;{' '}
-                <a href="https://cynbit.in" target="_blank" rel="noreferrer" className="text-zinc-300 hover:text-white hover:underline inline-flex items-center gap-0.5">
-                  cynbit.in <ExternalLink className="h-3 w-3 ml-0.5" />
-                </a>
+                Autonomous Cloud Solutions Architect & Commercial SOW Engine
               </p>
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-3 text-xs">
-            <div className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
-              Applicant: <span className="font-medium text-white">Tanmay Patil</span>
-            </div>
+          <div className="flex items-center gap-2.5 text-xs">
             <a
-              href="https://www.cynbit.in/candidate/cmwovenwx000708jnepnj4974"
+              href="/docs"
               target="_blank"
               rel="noreferrer"
-              className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-semibold transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition-colors flex items-center gap-1.5"
             >
-              Candidate Portal <ChevronRight className="h-3.5 w-3.5" />
+              <FileCode2 className="h-3.5 w-3.5 text-zinc-400" />
+              <span>API Specs</span>
+            </a>
+            <a
+              href="https://github.com/TANMAY4806w/cynbit-autoscope-ai"
+              target="_blank"
+              rel="noreferrer"
+              className="px-3.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-semibold transition-colors shadow-sm flex items-center gap-2"
+            >
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              <span>GitHub</span>
             </a>
           </div>
         </div>
@@ -208,17 +214,12 @@ export default function App() {
               <label className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block mb-1.5">
                 Client Scenario Preset
               </label>
-              <select
+              <CustomSelect
                 value={selectedPreset}
-                onChange={(e) => handlePresetChange(e.target.value)}
-                className="w-full bg-[#18181b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors"
-              >
-                {Object.keys(PRESETS).map((k) => (
-                  <option key={k} value={k}>
-                    {k}
-                  </option>
-                ))}
-              </select>
+                onChange={handlePresetChange}
+                options={Object.keys(PRESETS).map((k) => ({ value: k, label: k }))}
+                ariaLabel="Select Client Scenario Preset"
+              />
             </div>
 
             {/* Project Name & Industry */}
@@ -234,18 +235,19 @@ export default function App() {
               </div>
               <div>
                 <label className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block mb-1.5">Industry Vertical</label>
-                <select
+                <CustomSelect
                   value={industry}
-                  onChange={(e) => setIndustry(e.target.value)}
-                  className="w-full bg-[#18181b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors"
-                >
-                  <option>Healthcare</option>
-                  <option>FinTech</option>
-                  <option>E-Commerce</option>
-                  <option>SaaS & AI</option>
-                  <option>EdTech & Developer Tools</option>
-                  <option>Logistics & IoT</option>
-                </select>
+                  onChange={setIndustry}
+                  options={[
+                    'Healthcare',
+                    'FinTech',
+                    'E-Commerce',
+                    'SaaS & AI',
+                    'EdTech & Developer Tools',
+                    'Logistics & IoT',
+                  ]}
+                  ariaLabel="Select Industry Vertical"
+                />
               </div>
             </div>
 
@@ -270,29 +272,26 @@ export default function App() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block mb-1.5">Scale / Concurrency</label>
-                <select
+                <CustomSelect
                   value={concurrency}
-                  onChange={(e) => setConcurrency(e.target.value)}
-                  className="w-full bg-[#18181b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors"
-                >
-                  <option>Low (&lt; 1,000 DAU)</option>
-                  <option>Medium (1k - 10k DAU)</option>
-                  <option>High (10k - 50k DAU)</option>
-                  <option>Enterprise (&gt; 100k DAU)</option>
-                </select>
+                  onChange={setConcurrency}
+                  options={[
+                    'Low (< 1,000 DAU)',
+                    'Medium (1k - 10k DAU)',
+                    'High (10k - 50k DAU)',
+                    'Enterprise (> 100k DAU)',
+                  ]}
+                  ariaLabel="Select Concurrency Scale"
+                />
               </div>
               <div>
                 <label className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block mb-1.5">Target Cloud</label>
-                <select
+                <CustomSelect
                   value={cloud}
-                  onChange={(e) => setCloud(e.target.value)}
-                  className="w-full bg-[#18181b] border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-colors"
-                >
-                  <option>AWS</option>
-                  <option>GCP</option>
-                  <option>Azure</option>
-                  <option>Hybrid / Multi-Cloud</option>
-                </select>
+                  onChange={setCloud}
+                  options={['AWS', 'GCP', 'Azure', 'Hybrid / Multi-Cloud']}
+                  ariaLabel="Select Target Cloud"
+                />
               </div>
             </div>
 
@@ -700,28 +699,31 @@ export default function App() {
                 <div role="tabpanel" aria-labelledby="tab-terms" className="flex flex-col gap-4 animate-slide-up">
                   {(() => {
                     const totalDev = proposal.cost_breakdown.total_development_cost_inr || (proposal.cost_breakdown.total_development_cost_usd ? proposal.cost_breakdown.total_development_cost_usd * 85 : 0);
+                    const deposit = Math.round(totalDev * 0.3);
+                    const midpoint = Math.round(totalDev * 0.4);
+                    const finalDelivery = totalDev - deposit - midpoint;
                     return (
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
-                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">1. Upfront Deposit</span>
+                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">1. Upfront Deposit (30%)</span>
                           <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
-                            ₹{Math.round(totalDev * 0.3).toLocaleString('en-IN')} INR
+                            ₹{deposit.toLocaleString('en-IN')} INR
                           </span>
-                          <span className="text-xs text-zinc-400 mt-0.5 block">30% upon SOW signing</span>
+                          <span className="text-xs text-zinc-400 mt-0.5 block">Upon SOW signing & kickoff</span>
                         </div>
                         <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
-                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">2. Mid-Point Milestone</span>
+                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">2. Mid-Point Milestone (40%)</span>
                           <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
-                            ₹{Math.round(totalDev * 0.4).toLocaleString('en-IN')} INR
+                            ₹{midpoint.toLocaleString('en-IN')} INR
                           </span>
-                          <span className="text-xs text-zinc-400 mt-0.5 block">40% upon Sprint 3 & Core API demo</span>
+                          <span className="text-xs text-zinc-400 mt-0.5 block">Upon Sprint 3 & Core API demo</span>
                         </div>
                         <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
-                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">3. Final Delivery</span>
+                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">3. Final Delivery (30%)</span>
                           <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
-                            ₹{Math.round(totalDev * 0.3).toLocaleString('en-IN')} INR
+                            ₹{finalDelivery.toLocaleString('en-IN')} INR
                           </span>
-                          <span className="text-xs text-zinc-400 mt-0.5 block">30% upon staging cutover & sign-off</span>
+                          <span className="text-xs text-zinc-400 mt-0.5 block">Upon staging cutover & sign-off</span>
                         </div>
                       </div>
                     );
@@ -735,7 +737,7 @@ export default function App() {
                     </div>
                     <div className="p-3 rounded-lg bg-[#18181b] border border-zinc-800 text-xs text-zinc-300">
                       <span className="font-semibold text-white block mb-0.5">Warranty & Post-Launch Support:</span>
-                      Cynbit provides {proposal.commercial_terms.warranty_days} calendar days of complimentary bug fixing and SLA monitoring.
+                      AutoScope provides {proposal.commercial_terms.warranty_days} calendar days of complimentary bug fixing and SLA monitoring.
                     </div>
                     <div className="p-3 rounded-lg bg-[#18181b] border border-zinc-800 text-xs text-zinc-300">
                       <span className="font-semibold text-white block mb-0.5">Change Order Policy:</span>
@@ -779,25 +781,36 @@ export default function App() {
         </section>
       </main>
 
-      {/* Modern Bug-Free Enterprise Footer */}
+      {/* Modern Open-Source Enterprise Footer */}
       <footer className="border-t border-zinc-800/80 bg-[#09090b] py-4 px-6 mt-auto z-40">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-zinc-400">
           <div className="flex items-center gap-2 flex-wrap text-center md:text-left">
-            <span>
-              Engineered by <span className="font-semibold text-zinc-200">Tanmay Patil</span> for <span className="font-semibold text-zinc-200">AI/ML Engineer Intern Assessment</span>
-            </span>
+            <span className="font-semibold text-zinc-200">AutoScope AI</span>
             <span className="text-zinc-600 hidden sm:inline">&bull;</span>
-            <a href="https://cynbit.in" target="_blank" rel="noreferrer" className="text-zinc-300 hover:text-white hover:underline font-medium">
-              Cynbit Technologies Private Limited
-            </a>
+            <span>Autonomous Cloud Solutions Architect & Commercial Statement of Work (SOW) Synthesizer</span>
             <span className="text-zinc-600 hidden sm:inline">&bull;</span>
-            <span className="text-zinc-400">Jaipur, Rajasthan, India</span>
+            <span className="text-zinc-500 font-mono text-[11px]">Production Edition</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-800/80 border border-zinc-700/60 text-zinc-300 text-[11px] font-medium font-mono">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              Deadline: Wednesday, Nov 25, 2026, 03:10 AM IST
-            </span>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/TANMAY4806w/cynbit-autoscope-ai"
+              target="_blank"
+              rel="noreferrer"
+              className="text-zinc-400 hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
+            <span className="text-zinc-700">&bull;</span>
+            <a
+              href="/docs"
+              target="_blank"
+              rel="noreferrer"
+              className="text-zinc-400 hover:text-white transition-colors"
+            >
+              API Docs
+            </a>
+            <span className="text-zinc-700">&bull;</span>
+            <span className="text-zinc-500 font-mono text-[11px]">MIT License</span>
           </div>
         </div>
       </footer>

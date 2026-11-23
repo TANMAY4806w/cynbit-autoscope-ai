@@ -1,5 +1,5 @@
 """
-Cynbit AutoScope AI — Proposal & Statement of Work (SOW) Exporter
+AutoScope AI — Proposal & Statement of Work (SOW) Exporter
 Formats architecture proposals and commercial agreements formatted for B2B client presentations.
 """
 
@@ -16,13 +16,13 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
 
     deposit_amount = int(costs.total_development_cost_inr * (terms.deposit_percentage / 100))
     milestone_amount = int(costs.total_development_cost_inr * (terms.milestone_percentage / 100))
-    final_amount = int(costs.total_development_cost_inr * (terms.final_percentage / 100))
+    final_amount = costs.total_development_cost_inr - deposit_amount - milestone_amount
 
     lines = [
         f"# Technical Solution Architecture & Statement of Work (SOW)",
         f"## Project: {proposal.project_name}",
-        f"**Service Provider:** Cynbit Technologies Private Limited (`cynbit.in`, Jaipur, Rajasthan)  ",
-        f"**Inference Engine:** Cynbit AutoScope AI (`{proposal.generation_mode}`)  ",
+        f"**Service Provider:** AutoScope Engineering & Cloud Solutions Architecture  ",
+        f"**Inference Engine:** AutoScope AI Engine (`{proposal.generation_mode}`)  ",
         f"**Date Generated:** {proposal.generated_at}  ",
         f"**Industry Vertical:** {proposal.client_industry}  ",
         "",
@@ -102,7 +102,7 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
         "## 6. Commercial Terms & Legal Protections",
         "",
         f"* **Intellectual Property (IP):** {terms.intellectual_property_clause}",
-        f"* **Post-Launch Warranty:** Cynbit provides `{terms.warranty_days} calendar days` of complimentary bug-fixing and SLA monitoring following production delivery.",
+        f"* **Post-Launch Warranty:** AutoScope provides `{terms.warranty_days} calendar days` of complimentary bug-fixing and SLA monitoring following production delivery.",
         f"* **Scope Management:** {terms.change_order_policy}",
         "",
         "### Compliance & Security Baseline",
@@ -124,14 +124,14 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
         "## 7. Signatures & Authorization",
         "",
         "```text",
-        "Accepted & Agreed for Client:               Accepted for Cynbit Technologies:",
+        "Accepted & Agreed for Client:               Accepted for AutoScope Solutions:",
         "Signature: ______________________          Signature: ______________________",
-        "Name:      ______________________          Name:      Ashutosh Upadhyay / Mohak Saini",
-        "Title:     ______________________          Title:     Director & Technical Architect",
+        "Name:      ______________________          Name:      Principal Architect / Engineering Lead",
+        "Title:     ______________________          Title:     Head of Cloud Solutions",
         "Date:      ______________________          Date:      ______________________",
         "```",
         "",
-        "> *Generated autonomously by Cynbit AutoScope AI. To execute or customize, contact contact@cynbit.in or visit [cynbit.in](https://cynbit.in).*",
+        "> *Generated autonomously by AutoScope AI — Autonomous Cloud Solutions Architect & SOW Synthesizer.*",
     ])
 
     return "\n".join(lines)

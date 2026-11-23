@@ -1,5 +1,5 @@
-# Cynbit AutoScope AI ⚡
-### Autonomous Client Scoping, Cloud Architecture & Commercial SOW Engine
+# AutoScope AI ⚡
+### Autonomous Client Scoping, Cloud Architecture & Commercial Statement of Work (SOW) Engine
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
@@ -11,28 +11,24 @@
 [![Pytest](https://img.shields.io/badge/Tests-9%20Passed-brightgreen.svg)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **Applicant:** Tanmay Patil ([patiltanmay019@gmail.com](mailto:patiltanmay019@gmail.com) | +91 8308695986)  
-> **Role:** AI/ML Engineer Intern Assessment  
-> **Company:** Cynbit Technologies Private Limited ([cynbit.in](https://cynbit.in), Jaipur, India)  
-> **Candidate Portal:** [cynbit.in/candidate/cmwovenwx000708jnepnj4974](https://www.cynbit.in/candidate/cmwovenwx000708jnepnj4974)
+**AutoScope AI** is a production-grade autonomous Solutions Architect & Presales Proposal Synthesis platform. It converts ambiguous client requirements into enterprise cloud microservice architectures, high-contrast interactive Mermaid flowcharts, itemized sprint engineering roadmaps, and client-ready Statements of Work (SOWs) in **under 90 seconds**.
 
 ---
 
-## 📌 1. The Business Problem at Cynbit Technologies
+## 📌 1. The Presales & Architecture Bottleneck
 
 ```mermaid
 flowchart LR
     A["Inbound Vague Lead"] --> B["5-10 Hrs Discovery Calls"]
     B --> C["Manual Diagramming & Scoping"]
     C --> D["3-5 Days Proposal Delay"]
-    D --> E["Cynbit AutoScope AI"]
+    D --> E["AutoScope AI"]
     E --> F["Instant Blueprint & SOW in 90s"]
     F --> G["70% Presales Overhead Cut"]
 ```
 
-* **The Agency Pain Point:** Cynbit builds custom AI automation, web apps, and cloud systems for B2B clients. Inbound inquiries (via `cynbit.in/contact`) are typically vague (e.g. *"Build an AI doctor app with chat"*).
-* **The Cost:** Senior technical architects and founders spend **5 to 10 hours per lead** conducting discovery calls, sketching architecture diagrams, picking compliant tech stacks, and modeling sprint budgets.
-* **The Solution:** **Cynbit AutoScope AI** automates this entire presales pipeline into an interactive **90-second technical discovery, architecture generator, and Statement of Work (SOW) compiler**.
+* **The Problem:** Modern engineering teams and agency architects spend **5 to 10 hours per prospect** doing discovery calls, diagramming architectures, vetting compliance criteria (HIPAA, GDPR, SOC2, PCI-DSS), and modeling engineering hours.
+* **The Solution:** **AutoScope AI** automates this entire pipeline into an interactive **90-second technical discovery, architecture generator, and Statement of Work (SOW) compiler**.
 
 ---
 
@@ -147,11 +143,8 @@ cynbit-autoscope-ai/
 
 ---
 
-## 💼 5. Candidate & Assessment Information
+## 💼 5. Project Information & Open Source Links
 
-* **Candidate:** Tanmay Patil
-* **Email:** [patiltanmay019@gmail.com](mailto:patiltanmay019@gmail.com)
-* **Phone:** +91 8308695986
-* **Assessment Role:** AI/ML Engineer Intern
-* **Organization:** Cynbit Technologies Private Limited ([cynbit.in](https://cynbit.in))
-* **Submission Portal:** [cynbit.in/candidate/cmwovenwx000708jnepnj4974](https://www.cynbit.in/candidate/cmwovenwx000708jnepnj4974)
+* **Repository:** [https://github.com/TANMAY4806w/cynbit-autoscope-ai](https://github.com/TANMAY4806w/cynbit-autoscope-ai)
+* **API Documentation:** Interactive Swagger UI available at `http://localhost:8000/docs`
+* **License:** MIT Open Source License

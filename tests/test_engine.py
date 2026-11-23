@@ -127,7 +127,7 @@ def test_full_proposal_generation_and_export():
     
     md_output = export_proposal_markdown(proposal)
     assert "Statement of Work (SOW)" in md_output
-    assert "Cynbit Technologies Private Limited" in md_output
+    assert "AutoScope" in md_output
     assert "```mermaid" in md_output
     assert "Milestone Payment Schedule" in md_output
     assert "Signatures & Authorization" in md_output

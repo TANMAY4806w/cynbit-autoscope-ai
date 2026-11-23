@@ -90,7 +90,8 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    UI["Streamlit Frontend (app.py)"] --> CoreEngine["Architect Engine (architect_engine.py)"]
+    UI["React 19 Frontend (web-app/)"] --> Server["FastAPI Backend (server.py)"]
+    Server --> CoreEngine["Architect Engine (architect_engine.py)"]
     CoreEngine --> MultiLLM{"LLM Available?"}
     MultiLLM -- "Live API Key" --> LiveInference["Groq / OpenAI / Gemini"]
     MultiLLM -- "No Key / Offline" --> HeuristicEngine["Deterministic Expert Engine"]
@@ -132,8 +133,9 @@ flowchart TD
 
 ```text
 cynbit-autoscope-ai/
-├── app.py                      # Interactive Streamlit Web Application
-├── requirements.txt            # Python dependencies (Streamlit, Pydantic, Pytest)
+├── server.py                   # Production FastAPI Backend & Static Server
+├── web-app/                    # React 19 + TypeScript + Tailwind CSS Frontend
+├── requirements.txt            # Python dependencies (FastAPI, Uvicorn, Pydantic, Pytest)
 ├── .env.example                # Configuration template for optional API keys
 ├── README.md                   # Public GitHub Documentation
 ├── docs/

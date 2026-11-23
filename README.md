@@ -5,7 +5,6 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
 [![React 19](https://img.shields.io/badge/Frontend-React%2019%20%2B%20TypeScript-61DAFB.svg)](https://react.dev/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Styles-Tailwind%20CSS%20v4-38B2AC.svg)](https://tailwindcss.com/)
-[![Streamlit](https://img.shields.io/badge/UI-Streamlit%201.45-FF4B4B.svg)](https://streamlit.io/)
 [![Pydantic v2](https://img.shields.io/badge/Schema-Pydantic%20v2-E92063.svg)](https://docs.pydantic.dev/)
 [![OpenRouter](https://img.shields.io/badge/LLM-Llama--3.3--70B-purple.svg)](https://openrouter.ai/)
 [![AssemblyAI](https://img.shields.io/badge/Voice-AssemblyAI-0066CC.svg)](https://www.assemblyai.com/)
@@ -93,7 +92,7 @@ python -m pytest tests/ -v
 ```
 *(Verifies schema validation, offline heuristic engine, high-contrast Mermaid syntax, cost math, commercial terms, audio error handling, live proposal generation, FastAPI `/api/health`, and FastAPI `/api/synthesize` endpoints).*
 
-### Step 4: Run Application (Choose Your Preferred Interface)
+### Step 4: Run Application
 
 #### Option A: Unified Production Full-Stack (FastAPI + React 19) [Recommended]
 ```bash
@@ -110,12 +109,6 @@ npm run dev
 ```
 * Runs Vite dev server at `http://localhost:5173` with instant hot-reloading.
 
-#### Option C: Streamlit Web Dashboard
-```bash
-streamlit run app.py
-```
-* Runs the Streamlit interactive dashboard at `http://localhost:8501`.
-
 ---
 
 ## 📁 4. Repository File Structure
@@ -123,8 +116,7 @@ streamlit run app.py
 ```text
 cynbit-autoscope-ai/
 ├── server.py                   # Production FastAPI Backend & Static React Server
-├── app.py                      # Interactive Streamlit Web Application Alternative
-├── requirements.txt            # Python dependencies (FastAPI, Uvicorn, Streamlit, Pydantic, Pytest)
+├── requirements.txt            # Python dependencies (FastAPI, Uvicorn, Pydantic, Pytest)
 ├── .env.example                # Configuration template for optional API keys
 ├── README.md                   # Complete repository documentation
 ├── PRD_AND_TECHNICAL_ARCHITECTURE_PLAN.md # Master Product Requirements & Architecture Spec

@@ -15,9 +15,6 @@ ENV/
 .coverage
 htmlcov/
 
-# Streamlit
-.streamlit/secrets.toml
-
 # Node / Frontend
 node_modules/
 dist/

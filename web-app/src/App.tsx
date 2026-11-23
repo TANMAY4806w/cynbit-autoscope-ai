@@ -29,7 +29,7 @@ const PRESETS: Record<string, Partial<ClientInput>> = {
     compliance_tags: ['HIPAA', 'GDPR'],
     preferred_cloud: 'AWS',
     target_timeline_weeks: 10,
-    budget_tier: 'Growth ($10k - $25k)',
+    budget_tier: 'Growth (₹10L - ₹25L)',
   },
   'FinTech: PayFlow Guard (PCI-DSS)': {
     project_name: 'PayFlow Guard',
@@ -40,7 +40,7 @@ const PRESETS: Record<string, Partial<ClientInput>> = {
     compliance_tags: ['PCI-DSS', 'SOC2'],
     preferred_cloud: 'AWS',
     target_timeline_weeks: 12,
-    budget_tier: 'Enterprise ($25k - $50k)',
+    budget_tier: 'Enterprise (₹25L - ₹50L)',
   },
   'E-Commerce: ShopStream AI': {
     project_name: 'ShopStream AI',
@@ -51,7 +51,7 @@ const PRESETS: Record<string, Partial<ClientInput>> = {
     compliance_tags: ['GDPR'],
     preferred_cloud: 'GCP',
     target_timeline_weeks: 8,
-    budget_tier: 'Growth ($10k - $25k)',
+    budget_tier: 'Growth (₹10L - ₹25L)',
   },
   'EdTech: BitElevate CodeMentor': {
     project_name: 'BitElevate CodeMentor',
@@ -62,7 +62,7 @@ const PRESETS: Record<string, Partial<ClientInput>> = {
     compliance_tags: ['SOC2'],
     preferred_cloud: 'AWS',
     target_timeline_weeks: 8,
-    budget_tier: 'Growth ($10k - $25k)',
+    budget_tier: 'Growth (₹10L - ₹25L)',
   },
 };
 
@@ -403,16 +403,16 @@ export default function App() {
                 <div className="p-3.5 rounded-xl bg-[#121215] border border-zinc-800">
                   <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Fixed SOW Cost</span>
                   <span className="text-xl font-semibold text-zinc-100 font-mono mt-0.5 block">
-                    ${proposal.cost_breakdown.total_development_cost_usd.toLocaleString()}
+                    ₹{(proposal.cost_breakdown.total_development_cost_inr || (proposal.cost_breakdown.total_development_cost_usd ? proposal.cost_breakdown.total_development_cost_usd * 85 : 0)).toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[11px] text-zinc-400 block mt-0.5">USD project fee</span>
+                  <span className="text-[11px] text-zinc-400 block mt-0.5">INR project fee</span>
                 </div>
                 <div className="p-3.5 rounded-xl bg-[#121215] border border-zinc-800">
                   <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Cloud Monthly</span>
                   <span className="text-xl font-semibold text-zinc-100 font-mono mt-0.5 block">
-                    ${proposal.cost_breakdown.estimated_cloud_monthly_usd.toLocaleString()}
+                    ₹{(proposal.cost_breakdown.estimated_cloud_monthly_inr || (proposal.cost_breakdown.estimated_cloud_monthly_usd ? proposal.cost_breakdown.estimated_cloud_monthly_usd * 85 : 0)).toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[11px] text-zinc-400 block mt-0.5">USD / month</span>
+                  <span className="text-[11px] text-zinc-400 block mt-0.5">INR / month</span>
                 </div>
                 <div className="p-3.5 rounded-xl bg-[#121215] border border-zinc-800">
                   <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Timeline</span>
@@ -637,12 +637,14 @@ export default function App() {
                         </div>
                         <div className="flex justify-between py-1.5 border-b border-zinc-800">
                           <span>Blended Hourly Rate:</span>
-                          <span className="font-mono font-medium text-zinc-200">${proposal.cost_breakdown.blended_hourly_rate_usd}/hr</span>
+                          <span className="font-mono font-medium text-zinc-200">
+                            ₹{(proposal.cost_breakdown.blended_hourly_rate_inr || 2500).toLocaleString('en-IN')}/hr
+                          </span>
                         </div>
                         <div className="flex justify-between py-1.5 pt-2">
                           <span className="font-medium text-white">Fixed-Price Total:</span>
                           <span className="font-mono font-semibold text-base text-zinc-100">
-                            ${proposal.cost_breakdown.total_development_cost_usd.toLocaleString()} USD
+                            ₹{(proposal.cost_breakdown.total_development_cost_inr || (proposal.cost_breakdown.total_development_cost_usd ? proposal.cost_breakdown.total_development_cost_usd * 85 : 0)).toLocaleString('en-IN')} INR
                           </span>
                         </div>
                       </div>
@@ -653,12 +655,12 @@ export default function App() {
                       <div className="space-y-2 text-xs text-zinc-300">
                         <div className="flex justify-between py-1.5 border-b border-zinc-800">
                           <span>Cloud Provider:</span>
-                          <span className="font-mono font-medium text-white">{cloud}</span>
+                          <span className="font-mono font-medium text-white">{cloud} (Mumbai)</span>
                         </div>
                         <div className="flex justify-between py-1.5 border-b border-zinc-800">
                           <span>Monthly Estimated Burn:</span>
                           <span className="font-mono font-medium text-zinc-200">
-                            ${proposal.cost_breakdown.estimated_cloud_monthly_usd.toLocaleString()} / mo
+                            ₹{(proposal.cost_breakdown.estimated_cloud_monthly_inr || (proposal.cost_breakdown.estimated_cloud_monthly_usd ? proposal.cost_breakdown.estimated_cloud_monthly_usd * 85 : 0)).toLocaleString('en-IN')} / mo
                           </span>
                         </div>
                         <div className="flex justify-between py-1.5 pt-2">
@@ -676,14 +678,14 @@ export default function App() {
                         <thead>
                           <tr className="border-b border-zinc-800 text-zinc-400">
                             <th className="py-2 px-3 font-medium">Resource / Tier</th>
-                            <th className="py-2 px-3 text-right font-medium">Estimated Cost (USD)</th>
+                            <th className="py-2 px-3 text-right font-medium">Estimated Cost (INR)</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-zinc-800/60 font-mono">
                           {Object.entries(proposal.cost_breakdown.cloud_cost_items).map(([k, v]) => (
                             <tr key={k}>
                               <td className="py-2 px-3 text-zinc-300 font-sans">{k}</td>
-                              <td className="py-2 px-3 text-right text-zinc-200">${v.toLocaleString()}</td>
+                              <td className="py-2 px-3 text-right text-zinc-200">₹{v.toLocaleString('en-IN')}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -696,29 +698,34 @@ export default function App() {
               {/* Tab 6: Commercial Terms & SOW */}
               {activeTab === 'terms' && (
                 <div role="tabpanel" aria-labelledby="tab-terms" className="flex flex-col gap-4 animate-slide-up">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
-                      <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">1. Upfront Deposit</span>
-                      <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
-                        ${Math.round(proposal.cost_breakdown.total_development_cost_usd * 0.3).toLocaleString()} USD
-                      </span>
-                      <span className="text-xs text-zinc-400 mt-0.5 block">30% upon SOW signing</span>
-                    </div>
-                    <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
-                      <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">2. Mid-Point Milestone</span>
-                      <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
-                        ${Math.round(proposal.cost_breakdown.total_development_cost_usd * 0.4).toLocaleString()} USD
-                      </span>
-                      <span className="text-xs text-zinc-400 mt-0.5 block">40% upon Sprint 3 & Core API demo</span>
-                    </div>
-                    <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
-                      <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">3. Final Delivery</span>
-                      <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
-                        ${Math.round(proposal.cost_breakdown.total_development_cost_usd * 0.3).toLocaleString()} USD
-                      </span>
-                      <span className="text-xs text-zinc-400 mt-0.5 block">30% upon staging cutover & sign-off</span>
-                    </div>
-                  </div>
+                  {(() => {
+                    const totalDev = proposal.cost_breakdown.total_development_cost_inr || (proposal.cost_breakdown.total_development_cost_usd ? proposal.cost_breakdown.total_development_cost_usd * 85 : 0);
+                    return (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
+                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">1. Upfront Deposit</span>
+                          <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
+                            ₹{Math.round(totalDev * 0.3).toLocaleString('en-IN')} INR
+                          </span>
+                          <span className="text-xs text-zinc-400 mt-0.5 block">30% upon SOW signing</span>
+                        </div>
+                        <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
+                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">2. Mid-Point Milestone</span>
+                          <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
+                            ₹{Math.round(totalDev * 0.4).toLocaleString('en-IN')} INR
+                          </span>
+                          <span className="text-xs text-zinc-400 mt-0.5 block">40% upon Sprint 3 & Core API demo</span>
+                        </div>
+                        <div className="p-4 rounded-xl bg-[#121215] border border-zinc-800">
+                          <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">3. Final Delivery</span>
+                          <span className="text-lg font-mono font-semibold text-zinc-100 mt-1 block">
+                            ₹{Math.round(totalDev * 0.3).toLocaleString('en-IN')} INR
+                          </span>
+                          <span className="text-xs text-zinc-400 mt-0.5 block">30% upon staging cutover & sign-off</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   <div className="p-5 rounded-xl bg-[#121215] border border-zinc-800 space-y-3">
                     <h4 className="text-xs font-semibold text-white uppercase tracking-wider">Commercial Clauses & Legal Protections</h4>
@@ -772,17 +779,26 @@ export default function App() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800/80 bg-[#09090b] py-5 px-6 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-2">
-          <span>
-            Built by <b className="text-zinc-400">Tanmay Patil</b> for the <b className="text-zinc-400">AI/ML Engineer Intern Assessment</b> at{' '}
-            <a href="https://cynbit.in" target="_blank" rel="noreferrer" className="text-zinc-400 hover:text-white hover:underline">
+      {/* Modern Bug-Free Enterprise Footer */}
+      <footer className="border-t border-zinc-800/80 bg-[#09090b] py-4 px-6 mt-auto z-40">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-zinc-400">
+          <div className="flex items-center gap-2 flex-wrap text-center md:text-left">
+            <span>
+              Engineered by <span className="font-semibold text-zinc-200">Tanmay Patil</span> for <span className="font-semibold text-zinc-200">AI/ML Engineer Intern Assessment</span>
+            </span>
+            <span className="text-zinc-600 hidden sm:inline">&bull;</span>
+            <a href="https://cynbit.in" target="_blank" rel="noreferrer" className="text-zinc-300 hover:text-white hover:underline font-medium">
               Cynbit Technologies Private Limited
-            </a>{' '}
-            &bull; Jaipur, India
-          </span>
-          <span className="text-zinc-500">Due: Wednesday, Nov 25, 2026, at 03:10 AM IST</span>
+            </a>
+            <span className="text-zinc-600 hidden sm:inline">&bull;</span>
+            <span className="text-zinc-400">Jaipur, Rajasthan, India</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-800/80 border border-zinc-700/60 text-zinc-300 text-[11px] font-medium font-mono">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              Deadline: Wednesday, Nov 25, 2026, 03:10 AM IST
+            </span>
+          </div>
         </div>
       </footer>
     </div>

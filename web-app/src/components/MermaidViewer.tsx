@@ -30,8 +30,14 @@ export const MermaidViewer: React.FC<MermaidViewerProps> = ({ chart }) => {
 
     const renderChart = async () => {
       try {
+        // Robust automatic sanitization: wrap unquoted subgraph bracket labels in quotes
+        let cleanChart = chart.replace(
+          /subgraph\s+([A-Za-z0-9_]+)\s+\[([^"\]]+)\]/g,
+          'subgraph $1 ["$2"]'
+        );
+
         const id = `mermaid-${Math.random().toString(36).substring(2, 9)}`;
-        const { svg } = await mermaid.render(id, chart);
+        const { svg } = await mermaid.render(id, cleanChart);
         setSvgContent(svg);
         setError(null);
       } catch (err: any) {

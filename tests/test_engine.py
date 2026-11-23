@@ -82,12 +82,12 @@ def test_cost_and_sprint_math():
     )
     cost_breakdown, sprints = calculate_engineering_metrics(client_in)
     
-    # Check total cost equals hours * hourly rate
-    assert cost_breakdown.total_development_cost_usd == (
-        cost_breakdown.total_engineering_hours * cost_breakdown.blended_hourly_rate_usd
+    # Check total cost equals hours * hourly rate (INR)
+    assert cost_breakdown.total_development_cost_inr == (
+        cost_breakdown.total_engineering_hours * cost_breakdown.blended_hourly_rate_inr
     )
     # Check cloud sum
-    assert cost_breakdown.estimated_cloud_monthly_usd == sum(cost_breakdown.cloud_cost_items.values())
+    assert cost_breakdown.estimated_cloud_monthly_inr == sum(cost_breakdown.cloud_cost_items.values())
     # Check sprints
     assert len(sprints) >= 4
     assert sprints[0].sprint_number == 1

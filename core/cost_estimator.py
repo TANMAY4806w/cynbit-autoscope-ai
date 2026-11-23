@@ -47,29 +47,35 @@ def calculate_engineering_metrics(client_input: ClientInput) -> Tuple[CostBreakd
             compliance_cloud += 90
 
     total_hours = base_hours + compliance_hours
-    hourly_rate = 45  # Standard blended agency rate for offshore/hybrid delivery ($45/hr)
-    total_cost = total_hours * hourly_rate
+    hourly_rate_inr = 2500  # Standard blended agency rate for Cynbit India delivery (₹2,500/hr)
+    total_cost_inr = total_hours * hourly_rate_inr
 
-    # 3. Monthly Cloud Infrastructure Breakdown
+    # 3. Monthly Cloud Infrastructure Breakdown (INR - AWS/Cloud Mumbai Region)
     cloud_items: Dict[str, int] = {
-        f"Compute Cluster ({client_input.preferred_cloud})": int(cloud_base * 0.40),
-        "Managed PostgreSQL DB (Multi-AZ)": int(cloud_base * 0.25),
-        "Redis Cache Tier": int(cloud_base * 0.10),
-        "Vector DB / Semantic Search": int(cloud_base * 0.15),
-        "LLM Token Inference Budget": 60,
-        "Storage & Network Egress": int(cloud_base * 0.10),
+        f"Compute Cluster ({client_input.preferred_cloud} Mumbai)": int(cloud_base * 35),
+        "Managed PostgreSQL DB (Multi-AZ)": int(cloud_base * 22),
+        "Redis Cache Tier": int(cloud_base * 9),
+        "Vector DB / Semantic Search": int(cloud_base * 12),
+        "LLM Token Inference Budget": 5000,
+        "Storage & Network Egress": int(cloud_base * 8),
     }
     if compliance_cloud > 0:
-        cloud_items["Security & Audit Logging Compliance Tier"] = compliance_cloud
+        cloud_items["Security & Audit Logging Compliance Tier"] = int(compliance_cloud * 85)
 
-    monthly_cloud = sum(cloud_items.values())
+    monthly_cloud_inr = sum(cloud_items.values())
 
     cost_breakdown = CostBreakdown(
         total_engineering_hours=total_hours,
-        blended_hourly_rate_usd=hourly_rate,
-        total_development_cost_usd=total_cost,
-        estimated_cloud_monthly_usd=monthly_cloud,
+        currency="INR",
+        currency_symbol="₹",
+        blended_hourly_rate_inr=hourly_rate_inr,
+        total_development_cost_inr=total_cost_inr,
+        estimated_cloud_monthly_inr=monthly_cloud_inr,
         cloud_cost_items=cloud_items,
+        # Backward compatibility
+        blended_hourly_rate_usd=45,
+        total_development_cost_usd=int(total_cost_inr / 85),
+        estimated_cloud_monthly_usd=int(monthly_cloud_inr / 85),
     )
 
     # 4. Generate Structured Sprint Milestones (Default 4 to 6 sprints)

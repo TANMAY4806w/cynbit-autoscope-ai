@@ -15,7 +15,7 @@ export function buildMermaidDiagram(input: ClientInput): string {
 
   const lines = [
     'flowchart TD',
-    '    subgraph Ingress [1. Client & Ingress Tier]',
+    '    subgraph Ingress ["1. Client & Ingress Tier"]',
     '        WebClient["Web Client (Next.js / React)"]',
     '        MobileClient["Mobile App (React Native / Flutter)"]',
     '        APIGateway["API Gateway & Reverse Proxy (Kong / Cloudflare)"]',
@@ -23,7 +23,7 @@ export function buildMermaidDiagram(input: ClientInput): string {
     '        MobileClient --> APIGateway',
     '    end',
     '',
-    '    subgraph CoreServices [2. Application & Compute Tier]',
+    '    subgraph CoreServices ["2. Application & Compute Tier"]',
     '        AuthService["Auth & IAM Service (OAuth2 / JWT)"]',
     '        BusinessAPI["Core Application API (FastAPI / Python)"]',
     '        WorkerQueue["Task Worker & Async Queue (Celery / Redis)"]',
@@ -32,7 +32,7 @@ export function buildMermaidDiagram(input: ClientInput): string {
     '        BusinessAPI --> WorkerQueue',
     '    end',
     '',
-    '    subgraph AIService [3. AI & Vector Engine]',
+    '    subgraph AIService ["3. AI & Vector Engine"]',
     '        LLMOrchestrator["Orchestrator (LangGraph / DSPy)"]',
     '        VectorDB["Vector Database (Qdrant / pgvector)"]',
     '        ModelInference["LLM Inference (OpenRouter / Groq)"]',
@@ -41,7 +41,7 @@ export function buildMermaidDiagram(input: ClientInput): string {
     '        LLMOrchestrator --> ModelInference',
     '    end',
     '',
-    '    subgraph Persistence [4. Storage & Persistence Tier]',
+    '    subgraph Persistence ["4. Storage & Persistence Tier"]',
     '        PrimaryDB[("Primary DB (PostgreSQL 16)")]',
     '        CacheTier[("Cache Layer (Redis 7.2)")]',
     '        BlobStorage[("Object Storage (S3 / Cloud Storage)")]',
@@ -50,7 +50,7 @@ export function buildMermaidDiagram(input: ClientInput): string {
     '        WorkerQueue --> BlobStorage',
     '    end',
     '',
-    `    subgraph Infra [5. Cloud & Security Tier (${cloud})]`,
+    `    subgraph Infra ["5. Cloud & Security Tier (${cloud})"]`,
     '        WAF["Web Application Firewall & TLS 1.3"]',
     '        Observability["Monitoring (Prometheus & Grafana)"]',
     '        CICD["CI/CD Pipeline (GitHub Actions & Docker)"]',
@@ -146,30 +146,35 @@ export function calculateCostAndSprints(input: ClientInput): {
   }
 
   const totalHours = baseHours + complianceHours;
-  const hourlyRate = 45;
-  const totalCost = totalHours * hourlyRate;
+  const hourlyRateInr = 2500;
+  const totalCostInr = totalHours * hourlyRateInr;
 
   const cloudItems: Record<string, number> = {
-    [`Compute Cluster (${input.preferred_cloud})`]: Math.round(cloudBase * 0.4),
-    'Managed PostgreSQL DB (Multi-AZ)': Math.round(cloudBase * 0.25),
-    'Redis Cache Tier': Math.round(cloudBase * 0.1),
-    'Vector DB / Semantic Search': Math.round(cloudBase * 0.15),
-    'LLM Token Inference Budget': 60,
-    'Storage & Network Egress': Math.round(cloudBase * 0.1),
+    [`Compute Cluster (${input.preferred_cloud} Mumbai)`]: Math.round(cloudBase * 35),
+    'Managed PostgreSQL DB (Multi-AZ)': Math.round(cloudBase * 22),
+    'Redis Cache Tier': Math.round(cloudBase * 9),
+    'Vector DB / Semantic Search': Math.round(cloudBase * 12),
+    'LLM Token Inference Budget': 5000,
+    'Storage & Network Egress': Math.round(cloudBase * 8),
   };
 
   if (complianceCloud > 0) {
-    cloudItems['Security & Audit Logging Compliance Tier'] = complianceCloud;
+    cloudItems['Security & Audit Logging Compliance Tier'] = Math.round(complianceCloud * 85);
   }
 
-  const monthlyCloud = Object.values(cloudItems).reduce((a, b) => a + b, 0);
+  const monthlyCloudInr = Object.values(cloudItems).reduce((a, b) => a + b, 0);
 
   const cost: CostBreakdown = {
     total_engineering_hours: totalHours,
-    blended_hourly_rate_usd: hourlyRate,
-    total_development_cost_usd: totalCost,
-    estimated_cloud_monthly_usd: monthlyCloud,
+    currency: 'INR',
+    currency_symbol: '₹',
+    blended_hourly_rate_inr: hourlyRateInr,
+    total_development_cost_inr: totalCostInr,
+    estimated_cloud_monthly_inr: monthlyCloudInr,
     cloud_cost_items: cloudItems,
+    blended_hourly_rate_usd: 45,
+    total_development_cost_usd: Math.round(totalCostInr / 85),
+    estimated_cloud_monthly_usd: Math.round(monthlyCloudInr / 85),
   };
 
   const weeks = input.target_timeline_weeks;
@@ -405,7 +410,7 @@ export async function generateProposal(
     intellectual_property_clause:
       '100% intellectual property (IP), source code, and design assets transfer to the client upon final payment receipt.',
     change_order_policy:
-      'Scope expansions exceeding sprint parameters billed at $45/hour via written Change Order addendum.',
+      'Scope expansions exceeding sprint parameters billed at ₹2,500/hour via written Change Order addendum.',
   };
 
   const key = openRouterKey || (import.meta as any).env?.VITE_OPENROUTER_API_KEY || '';
@@ -489,9 +494,13 @@ export function exportProposalMarkdown(proposal: ArchitectureProposal): string {
   const terms = proposal.commercial_terms;
   const costs = proposal.cost_breakdown;
 
-  const deposit = Math.round(costs.total_development_cost_usd * (terms.deposit_percentage / 100));
-  const milestone = Math.round(costs.total_development_cost_usd * (terms.milestone_percentage / 100));
-  const finalAmt = Math.round(costs.total_development_cost_usd * (terms.final_percentage / 100));
+  const totalCost = costs.total_development_cost_inr || (costs.total_development_cost_usd ? costs.total_development_cost_usd * 85 : 0);
+  const hourlyRate = costs.blended_hourly_rate_inr || 2500;
+  const cloudMonthly = costs.estimated_cloud_monthly_inr || (costs.estimated_cloud_monthly_usd ? costs.estimated_cloud_monthly_usd * 85 : 0);
+
+  const deposit = Math.round(totalCost * (terms.deposit_percentage / 100));
+  const milestone = Math.round(totalCost * (terms.milestone_percentage / 100));
+  const finalAmt = Math.round(totalCost * (terms.final_percentage / 100));
 
   const lines = [
     '# Technical Solution Architecture & Statement of Work (SOW)',
@@ -561,24 +570,24 @@ export function exportProposalMarkdown(proposal: ArchitectureProposal): string {
     '## 5. Commercial Investment & Payment Schedule',
     '',
     `* **Total Scoped Effort:** \`${costs.total_engineering_hours} Engineering Hours\``,
-    `* **Blended Rate:** \`$${costs.blended_hourly_rate_usd} / hour (Development, DevOps, AI, QA)\``,
-    `* **Total Fixed-Price Investment:** **$${costs.total_development_cost_usd.toLocaleString()} USD**`,
-    `* **Estimated Monthly Cloud Burn:** **$${costs.estimated_cloud_monthly_usd.toLocaleString()} USD/month**`,
+    `* **Blended Rate:** \`₹${hourlyRate.toLocaleString('en-IN')} / hour (Development, DevOps, AI, QA)\``,
+    `* **Total Fixed-Price Investment:** **₹${totalCost.toLocaleString('en-IN')} INR**`,
+    `* **Estimated Monthly Cloud Burn:** **₹${cloudMonthly.toLocaleString('en-IN')} INR/month**`,
     '',
     '### Milestone Payment Schedule',
-    '| Payment Gate | Percentage | Amount (USD) | Trigger Event |',
+    '| Payment Gate | Percentage | Amount (INR) | Trigger Event |',
     '| :--- | :---: | :---: | :--- |',
-    `| **1. Upfront Deposit** | ${terms.deposit_percentage}% | **$${deposit.toLocaleString()}** | Project kickoff & repository provisioning |`,
-    `| **2. Mid-Point Milestone** | ${terms.milestone_percentage}% | **$${milestone.toLocaleString()}** | Sprint 3 completion & Core API demo |`,
-    `| **3. Final Delivery** | ${terms.final_percentage}% | **$${finalAmt.toLocaleString()}** | Staging sign-off & production cutover |`,
+    `| **1. Upfront Deposit** | ${terms.deposit_percentage}% | **₹${deposit.toLocaleString('en-IN')}** | Project kickoff & repository provisioning |`,
+    `| **2. Mid-Point Milestone** | ${terms.milestone_percentage}% | **₹${milestone.toLocaleString('en-IN')}** | Sprint 3 completion & Core API demo |`,
+    `| **3. Final Delivery** | ${terms.final_percentage}% | **₹${finalAmt.toLocaleString('en-IN')}** | Staging sign-off & production cutover |`,
     '',
     '### Itemized Cloud Infrastructure Burn',
-    '| Cloud Service / Resource | Estimated Monthly Burn (USD) |',
+    '| Cloud Service / Resource | Estimated Monthly Burn (INR) |',
     '| :--- | :--- |'
   );
 
   for (const [k, v] of Object.entries(costs.cloud_cost_items)) {
-    lines.push(`| ${k} | \`$${v.toLocaleString()}\` |`);
+    lines.push(`| ${k} | \`₹${v.toLocaleString('en-IN')}\` |`);
   }
 
   lines.push(

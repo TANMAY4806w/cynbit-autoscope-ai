@@ -14,9 +14,9 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
     terms = proposal.commercial_terms
     costs = proposal.cost_breakdown
 
-    deposit_amount = int(costs.total_development_cost_usd * (terms.deposit_percentage / 100))
-    milestone_amount = int(costs.total_development_cost_usd * (terms.milestone_percentage / 100))
-    final_amount = int(costs.total_development_cost_usd * (terms.final_percentage / 100))
+    deposit_amount = int(costs.total_development_cost_inr * (terms.deposit_percentage / 100))
+    milestone_amount = int(costs.total_development_cost_inr * (terms.milestone_percentage / 100))
+    final_amount = int(costs.total_development_cost_inr * (terms.final_percentage / 100))
 
     lines = [
         f"# Technical Solution Architecture & Statement of Work (SOW)",
@@ -77,23 +77,23 @@ def export_proposal_markdown(proposal: ArchitectureProposal) -> str:
         "## 5. Commercial Investment & Payment Schedule",
         "",
         f"* **Total Scoped Effort:** `{costs.total_engineering_hours} Engineering Hours`",
-        f"* **Blended Rate:** `${costs.blended_hourly_rate_usd} / hour (Development, DevOps, AI, QA)`",
-        f"* **Total Fixed-Price Investment:** **`${costs.total_development_cost_usd:,} USD`**",
-        f"* **Estimated Monthly Cloud Burn:** **`${costs.estimated_cloud_monthly_usd:,} USD/month`**",
+        f"* **Blended Rate:** `₹{costs.blended_hourly_rate_inr:,} / hour (Development, DevOps, AI, QA)`",
+        f"* **Total Fixed-Price Investment:** **`₹{costs.total_development_cost_inr:,} INR`**",
+        f"* **Estimated Monthly Cloud Burn:** **`₹{costs.estimated_cloud_monthly_inr:,} INR/month`**",
         "",
         "### Milestone Payment Schedule",
-        f"| Payment Gate | Percentage | Amount (USD) | Trigger Event |",
+        f"| Payment Gate | Percentage | Amount (INR) | Trigger Event |",
         f"| :--- | :---: | :---: | :--- |",
-        f"| **1. Upfront Deposit** | {terms.deposit_percentage}% | **${deposit_amount:,}** | Project kickoff & repository provisioning |",
-        f"| **2. Mid-Point Milestone** | {terms.milestone_percentage}% | **${milestone_amount:,}** | Sprint 3 completion & Core API demo |",
-        f"| **3. Final Delivery** | {terms.final_percentage}% | **${final_amount:,}** | Staging sign-off & production cutover |",
+        f"| **1. Upfront Deposit** | {terms.deposit_percentage}% | **₹{deposit_amount:,}** | Project kickoff & repository provisioning |",
+        f"| **2. Mid-Point Milestone** | {terms.milestone_percentage}% | **₹{milestone_amount:,}** | Sprint 3 completion & Core API demo |",
+        f"| **3. Final Delivery** | {terms.final_percentage}% | **₹{final_amount:,}** | Staging sign-off & production cutover |",
         "",
         "### Itemized Cloud Infrastructure Burn",
-        "| Cloud Service / Resource | Estimated Monthly Burn (USD) |",
+        "| Cloud Service / Resource | Estimated Monthly Burn (INR) |",
         "| :--- | :--- |",
     ])
     for k, v in costs.cloud_cost_items.items():
-        lines.append(f"| {k} | `${v:,}` |")
+        lines.append(f"| {k} | `₹{v:,}` |")
 
     lines.extend([
         "",

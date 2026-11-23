@@ -33,10 +33,15 @@ export interface SprintMilestone {
 
 export interface CostBreakdown {
   total_engineering_hours: number;
-  blended_hourly_rate_usd: number;
-  total_development_cost_usd: number;
-  estimated_cloud_monthly_usd: number;
+  currency?: string;
+  currency_symbol?: string;
+  blended_hourly_rate_inr: number;
+  total_development_cost_inr: number;
+  estimated_cloud_monthly_inr: number;
   cloud_cost_items: Record<string, number>;
+  blended_hourly_rate_usd?: number;
+  total_development_cost_usd?: number;
+  estimated_cloud_monthly_usd?: number;
 }
 
 export interface CommercialTerms {

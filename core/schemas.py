@@ -43,10 +43,16 @@ class SprintMilestone(BaseModel):
 
 class CostBreakdown(BaseModel):
     total_engineering_hours: int = Field(..., ge=1, description="Total developer hours")
-    blended_hourly_rate_usd: int = Field(default=45, description="Blended hourly billing rate in USD")
-    total_development_cost_usd: int = Field(..., description="Total development estimate")
-    estimated_cloud_monthly_usd: int = Field(..., description="Estimated cloud infra burn per month")
-    cloud_cost_items: Dict[str, int] = Field(default_factory=dict, description="Breakdown of cloud services")
+    currency: str = Field(default="INR", description="Currency code (INR)")
+    currency_symbol: str = Field(default="₹", description="Currency symbol (₹)")
+    blended_hourly_rate_inr: int = Field(default=2500, description="Blended hourly billing rate in INR (₹)")
+    total_development_cost_inr: int = Field(..., description="Total development estimate in INR (₹)")
+    estimated_cloud_monthly_inr: int = Field(..., description="Estimated cloud infra burn per month in INR (₹)")
+    cloud_cost_items: Dict[str, int] = Field(default_factory=dict, description="Breakdown of cloud services in INR (₹)")
+    # Backwards compatibility fields
+    blended_hourly_rate_usd: Optional[int] = Field(default=45, description="Legacy USD rate")
+    total_development_cost_usd: Optional[int] = Field(default=0, description="Legacy USD total")
+    estimated_cloud_monthly_usd: Optional[int] = Field(default=0, description="Legacy USD cloud burn")
 
 
 class CommercialTerms(BaseModel):
@@ -59,7 +65,7 @@ class CommercialTerms(BaseModel):
         description="IP ownership terms"
     )
     change_order_policy: str = Field(
-        default="Scope expansions exceeding sprint parameters billed at $45/hour via written Change Order addendum.",
+        default="Scope expansions exceeding sprint parameters billed at ₹2,500/hour via written Change Order addendum.",
         description="Change order policy"
     )
 

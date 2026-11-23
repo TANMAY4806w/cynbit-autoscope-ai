@@ -1,0 +1,39 @@
+name: Keep Render App Alive 24/7
+
+on:
+  schedule:
+    # Runs every 14 minutes (Render free tier spins down after 15 min of inactivity)
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+  push:
+    branches: [ main ]
+
+jobs:
+  keep-alive:
+    name: Ping Render App Health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Warmup Ping to Render
+        run: |
+          TARGET_URL="${{ secrets.RENDER_APP_URL }}"
+          if [ -z "$TARGET_URL" ]; then
+            echo "⚠️ [ACTION REQUIRED]: 'RENDER_APP_URL' secret is not configured yet."
+            echo "👉 Add your Render URL in: GitHub Repo -> Settings -> Secrets and variables -> Actions -> Repository secrets"
+            echo "   Name:  RENDER_APP_URL"
+            echo "   Value: https://your-app-name.onrender.com"
+            exit 0
+          fi
+
+          # Normalize URL by removing trailing slashes
+          BASE_URL="${TARGET_URL%/}"
+          HEALTH_URL="${BASE_URL}/api/health"
+
+          echo "🚀 Sending keep-alive request to: $HEALTH_URL"
+          RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 45 "$HEALTH_URL" || echo "000")
+
+          echo "HTTP Response Status: $RESPONSE_CODE"
+          if [ "$RESPONSE_CODE" -eq 200 ]; then
+            echo "✅ AutoScope AI is warm, active, and healthy! Zero cold starts."
+          else
+            echo "⚠️ Ping returned status $RESPONSE_CODE. Server is waking up."
+          fi

@@ -9,7 +9,9 @@
 [![OpenRouter](https://img.shields.io/badge/LLM-Llama--3.3--70B-purple.svg)](https://openrouter.ai/)
 [![AssemblyAI](https://img.shields.io/badge/Voice-AssemblyAI-0066CC.svg)](https://www.assemblyai.com/)
 [![Pytest](https://img.shields.io/badge/Tests-9%20Passed-brightgreen.svg)](https://docs.pytest.org/)
+[![24/7 Uptime](https://img.shields.io/badge/Render-24%2F7%20Keep--Alive%20Active-brightgreen.svg)](https://github.com/TANMAY4806w/cynbit-autoscope-ai/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 **AutoScope AI** is a production-grade autonomous Solutions Architect & Presales Proposal Synthesis platform. It converts ambiguous client requirements into enterprise cloud microservice architectures, high-contrast interactive Mermaid flowcharts, itemized sprint engineering roadmaps, and client-ready Statements of Work (SOWs) in **under 90 seconds**.
 
@@ -107,10 +109,83 @@ npm run dev
 
 ---
 
-## 📁 4. Repository File Structure
+## 🚀 4. Production Cloud Deployment on Render (24/7 Zero Spin-Down)
+
+AutoScope AI includes pre-configured Render infrastructure (`render.yaml`) and an automated **GitHub Actions Keep-Alive Cron** (`.github/workflows/keep_alive.yml`) to keep the Render free-tier instance permanently active with **zero cold starts and zero sleep timeouts**.
+
+```mermaid
+flowchart LR
+    Push["git push origin main"] ➡️ RenderBuild["Render Auto-Builds React + FastAPI"] ➡️ Health["Live on https://*.onrender.com"] ➡️ Cron["GitHub Actions (Every 14m Ping)"] ➡️ Active["24/7 Active (No Spin Down)"]
+```
+
+### Step-by-Step Render Deployment:
+
+1. **Sign Up / Log In**:
+   * Navigate to [render.com](https://render.com) and log in with your GitHub account.
+
+2. **Create New Web Service**:
+   * Click **New +** ➡️ **Web Service**.
+   * Choose **Build and deploy from a Git repository**.
+   * Connect and select `cynbit-autoscope-ai`.
+
+3. **Configure Service Settings**:
+   * **Name**: `autoscope-ai` (or your chosen subdomain)
+   * **Region**: `Oregon (US West)` or `Frankfurt (EU)`
+   * **Branch**: `main`
+   * **Runtime**: `Python 3`
+   * **Build Command**:
+     ```bash
+     pip install -r requirements.txt && npm --prefix web-app install && npm --prefix web-app run build
+     ```
+   * **Start Command**:
+     ```bash
+     uvicorn server:app --host 0.0.0.0 --port $PORT
+     ```
+   * **Instance Type**: `Free`
+
+4. **Add Environment Variables in Render**:
+   In the **Environment Variables** section, add the following key-value pairs:
+
+   | Key | Value | Purpose |
+   | :--- | :--- | :--- |
+   | `PORT` | `10000` | Render internal port routing |
+   | `PYTHON_VERSION` | `3.12.8` | Stable Python runtime environment |
+   | `OPENROUTER_API_KEY` | *(Your key or leave empty)* | Optional: Cloud LLM inference (Llama 3.3 70B) |
+   | `GROQ_API_KEY` | *(Your key or leave empty)* | Optional: High-speed Groq LPU inference |
+   | `ASSEMBLYAI_API_KEY` | *(Your key or leave empty)* | Optional: Voice note & Zoom audio transcription |
+
+   *(Note: If no API keys are provided, the system automatically uses its built-in Deterministic Offline Engine with 100% full feature availability).*
+
+5. **Deploy**:
+   * Click **Create Web Service**. Render will provision dependencies and serve the app at `https://autoscope-ai.onrender.com`.
+
+---
+
+## ⏱️ 5. Setting Up 24/7 Keep-Alive Automation (Solves Free Tier Sleep)
+
+Render's free tier spins down after **15 minutes of inactivity**. We prevent this completely via our included GitHub Action:
+
+1. Copy your live Render URL (e.g. `https://autoscope-ai.onrender.com`).
+2. Go to your GitHub repository:
+   * **Settings** ➡️ **Secrets and variables** ➡️ **Actions** ➡️ **New repository secret**.
+3. Create the secret:
+   * **Name**: `RENDER_APP_URL`
+   * **Value**: `https://autoscope-ai.onrender.com` *(replace with your actual Render URL)*
+4. Click **Add secret**.
+
+The workflow in `.github/workflows/keep_alive.yml` automatically triggers **every 14 minutes**, pinging `/api/health` so your application stays warm 24 hours a day, 7 days a week.
+
+---
+
+## 📁 6. Repository File Structure
 
 ```text
 cynbit-autoscope-ai/
+├── .github/
+│   └── workflows/
+│       ├── keep_alive.yml      # 24/7 Render Keep-Alive Cron (Pings /api/health every 14m)
+│       └── ci.yml              # Automated GitHub Actions Pytest Suite
+├── render.yaml                 # Infrastructure-as-Code Blueprint for Render Deployment
 ├── server.py                   # Production FastAPI Backend & Static React Server
 ├── requirements.txt            # Python dependencies (FastAPI, Uvicorn, Pydantic, Pytest)
 ├── .env.example                # Configuration template for optional API keys
@@ -143,7 +218,7 @@ cynbit-autoscope-ai/
 
 ---
 
-## 💼 5. Project Information & Open Source Links
+## 💼 7. Project Information & Open Source Links
 
 * **Repository:** [https://github.com/TANMAY4806w/cynbit-autoscope-ai](https://github.com/TANMAY4806w/cynbit-autoscope-ai)
 * **API Documentation:** Interactive Swagger UI available at `http://localhost:8000/docs`

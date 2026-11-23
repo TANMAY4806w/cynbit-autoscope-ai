@@ -1,5 +1,5 @@
 """
-Unit and Integration Tests for Cynbit AutoScope AI Engine
+Unit and Integration Tests for Cynbit AutoScope AI Engine & FastAPI Server
 Run with: pytest tests/ -v
 """
 
@@ -9,12 +9,16 @@ import os
 # Ensure package root is in path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+from fastapi.testclient import TestClient
+from server import app
 from core.schemas import ClientInput, ArchitectureProposal, CommercialTerms
 from core.architect_engine import generate_full_proposal, get_heuristic_architecture
 from core.diagram_generator import build_mermaid_flowchart
 from core.cost_estimator import calculate_engineering_metrics
 from core.exporter import export_proposal_markdown
 from core.audio_transcriber import transcribe_client_audio
+
+client = TestClient(app)
 
 
 def test_client_input_validation():
@@ -127,3 +131,34 @@ def test_full_proposal_generation_and_export():
     assert "```mermaid" in md_output
     assert "Milestone Payment Schedule" in md_output
     assert "Signatures & Authorization" in md_output
+
+
+def test_api_health_endpoint():
+    """Verifies FastAPI GET /api/health returns 200 and integration dictionary."""
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "healthy"
+    assert "integrations" in data
+    assert data["integrations"]["deterministic_offline_engine"] is True
+
+
+def test_api_synthesize_endpoint():
+    """Verifies FastAPI POST /api/synthesize accepts ClientInput and returns 200 ArchitectureProposal."""
+    payload = {
+        "project_name": "TestAPI Project",
+        "client_industry": "FinTech",
+        "vision_description": "Automated payment anomaly detector.",
+        "concurrency_tier": "Medium (1k - 10k DAU)",
+        "compliance_tags": ["PCI-DSS"],
+        "preferred_cloud": "AWS",
+        "budget_tier": "Growth ($10k - $25k)",
+        "target_timeline_weeks": 8
+    }
+    response = client.post("/api/synthesize", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["project_name"] == "TestAPI Project"
+    assert "mermaid_diagram" in data
+    assert "cost_breakdown" in data
+    assert "sprint_plan" in data

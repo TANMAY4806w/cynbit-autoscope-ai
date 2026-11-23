@@ -2,11 +2,14 @@
 ### Autonomous Client Scoping, Cloud Architecture & Commercial SOW Engine
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
+[![React 19](https://img.shields.io/badge/Frontend-React%2019%20%2B%20TypeScript-61DAFB.svg)](https://react.dev/)
+[![Tailwind CSS v4](https://img.shields.io/badge/Styles-Tailwind%20CSS%20v4-38B2AC.svg)](https://tailwindcss.com/)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit%201.45-FF4B4B.svg)](https://streamlit.io/)
 [![Pydantic v2](https://img.shields.io/badge/Schema-Pydantic%20v2-E92063.svg)](https://docs.pydantic.dev/)
 [![OpenRouter](https://img.shields.io/badge/LLM-Llama--3.3--70B-purple.svg)](https://openrouter.ai/)
 [![AssemblyAI](https://img.shields.io/badge/Voice-AssemblyAI-0066CC.svg)](https://www.assemblyai.com/)
-[![Pytest](https://img.shields.io/badge/Tests-7%20Passed-brightgreen.svg)](https://docs.pytest.org/)
+[![Pytest](https://img.shields.io/badge/Tests-9%20Passed-brightgreen.svg)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **Applicant:** Tanmay Patil ([patiltanmay019@gmail.com](mailto:patiltanmay019@gmail.com) | +91 8308695986)  
@@ -70,6 +73,7 @@ flowchart TD
 
 ### Prerequisites
 * Python 3.10+ (Tested on Python 3.13)
+* Node.js v18+ & npm (Optional, only needed if modifying frontend code)
 * Git
 
 ### Step 1: Clone Repository
@@ -78,22 +82,39 @@ git clone https://github.com/TANMAY4806w/cynbit-autoscope-ai.git
 cd cynbit-autoscope-ai
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Install Python Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 3: Run Automated Pytest Suite (7/7 Passing)
+### Step 3: Run Automated Pytest Suite (9/9 Passing)
 ```bash
 python -m pytest tests/ -v
 ```
-*(Verifies schema validation, offline engine, cost math, high-contrast Mermaid syntax, audio fallback, and SOW clauses).*
+*(Verifies schema validation, offline heuristic engine, high-contrast Mermaid syntax, cost math, commercial terms, audio error handling, live proposal generation, FastAPI `/api/health`, and FastAPI `/api/synthesize` endpoints).*
 
-### Step 4: Launch Web Dashboard
+### Step 4: Run Application (Choose Your Preferred Interface)
+
+#### Option A: Unified Production Full-Stack (FastAPI + React 19) [Recommended]
+```bash
+python server.py
+```
+* **Frontend Web App:** Open `http://localhost:8000` in your browser.
+* **OpenAPI Interactive Swagger Docs:** Available at `http://localhost:8000/docs`.
+
+#### Option B: React Frontend Dev Server (Vite HMR)
+```bash
+cd web-app
+npm install
+npm run dev
+```
+* Runs Vite dev server at `http://localhost:5173` with instant hot-reloading.
+
+#### Option C: Streamlit Web Dashboard
 ```bash
 streamlit run app.py
 ```
-Open your browser at `http://localhost:8501`.
+* Runs the Streamlit interactive dashboard at `http://localhost:8501`.
 
 ---
 
@@ -101,13 +122,21 @@ Open your browser at `http://localhost:8501`.
 
 ```text
 cynbit-autoscope-ai/
-├── app.py                      # Interactive Streamlit Web Application
-├── requirements.txt            # Python dependencies (Streamlit, Pydantic, Pytest)
+├── server.py                   # Production FastAPI Backend & Static React Server
+├── app.py                      # Interactive Streamlit Web Application Alternative
+├── requirements.txt            # Python dependencies (FastAPI, Uvicorn, Streamlit, Pydantic, Pytest)
 ├── .env.example                # Configuration template for optional API keys
 ├── README.md                   # Complete repository documentation
 ├── PRD_AND_TECHNICAL_ARCHITECTURE_PLAN.md # Master Product Requirements & Architecture Spec
-├── docs/
-│   └── PRD_AND_TECHNICAL_ARCHITECTURE_PLAN.md
+├── web-app/                    # Production React 19 + TypeScript + Tailwind CSS Frontend
+│   ├── src/
+│   │   ├── App.tsx             # Main Application shell with 7 tabs & slide animations
+│   │   ├── types.ts            # TypeScript interfaces aligned with Pydantic schemas
+│   │   ├── proposalEngine.ts   # Client-side heuristic synthesis & API client
+│   │   └── index.css           # Tailwind CSS v4 styling & animations
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── dist/                   # Production compiled assets
 ├── core/
 │   ├── __init__.py
 │   ├── schemas.py              # Pydantic v2 data models & validation
@@ -121,7 +150,7 @@ cynbit-autoscope-ai/
 │   └── system_prompt.py        # System prompts & few-shot architecture schemas
 └── tests/
     ├── __init__.py
-    └── test_engine.py          # Pytest automated test suite (7/7 Passing in 0.18s)
+    └── test_engine.py          # Pytest automated test suite (9/9 Passing)
 ```
 
 ---

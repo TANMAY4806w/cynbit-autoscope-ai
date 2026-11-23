@@ -10,6 +10,7 @@
 [![AssemblyAI](https://img.shields.io/badge/Voice-AssemblyAI-0066CC.svg)](https://www.assemblyai.com/)
 [![Pytest](https://img.shields.io/badge/Tests-9%20Passed-brightgreen.svg)](https://docs.pytest.org/)
 [![24/7 Uptime](https://img.shields.io/badge/Render-24%2F7%20Keep--Alive%20Active-brightgreen.svg)](https://github.com/TANMAY4806w/cynbit-autoscope-ai/actions)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-cynbit--autoscope--ai.onrender.com-blue.svg)](https://cynbit-autoscope-ai.onrender.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
@@ -115,7 +116,10 @@ AutoScope AI includes pre-configured Render infrastructure (`render.yaml`) and a
 
 ```mermaid
 flowchart LR
-    Push["git push origin main"] ➡️ RenderBuild["Render Auto-Builds React + FastAPI"] ➡️ Health["Live on https://*.onrender.com"] ➡️ Cron["GitHub Actions (Every 14m Ping)"] ➡️ Active["24/7 Active (No Spin Down)"]
+    Push["git push origin main"] --> RenderBuild["Render Auto-Builds React + FastAPI"]
+    RenderBuild --> Health["Live on Render"]
+    Health --> Cron["GitHub Actions (Every 14m Ping)"]
+    Cron --> Active["24/7 Active (No Sleep / Zero Cold Starts)"]
 ```
 
 ### Step-by-Step Render Deployment:
